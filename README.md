@@ -56,7 +56,7 @@ A payer wants to verify that a prover has the claimed bandwidth. It requests for
 
 The figure below illustrates the above functionality.
 
-![PoB workflow](https://raw.githubusercontent.com/kaleidoscope-blockchain/pob-protocol/assets/images/architecture.jpeg)
+![PoB workflow](https://github.com/kaleidoscope-blockchain/pob-protocol/blob/main/assets/images/architecture.jpeg?raw=true)
 
 
 # Trust and Threat Model
