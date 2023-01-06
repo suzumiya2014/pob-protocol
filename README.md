@@ -56,7 +56,7 @@ A payer wants to verify that a prover has the claimed bandwidth. It requests for
 
 The figure below illustrates the above functionality.
 
-    ![PoB workflow](assets/images/architecture.jpeg)
+![PoB workflow](assets/images/architecture.jpeg)
 
 
 # Trust and Threat Model
