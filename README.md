@@ -2,13 +2,17 @@
 
 Proof of Backhaul is a decentralised speed-test which can be used by a “payer” to determine the backhaul capacity of a “prover” with the help of a pool of “challengers“ who send the challenge traffic to the prover. We are aspiring to build a protocol which is open (anyone can be a challenger) and trustfree (we need not trust any party). While we get there, the current version works under limited, explicitly stated trust assumptions. (Refer to *Parties Involved* to understand more about provers, challengers and payers)
 
+# Community
+For help, discussion about best practices, or any other conversation that would benefit the protocol, please [Join the Witness Chain Discord Server](https://discord.gg/ZA2ggnn5z2)
+
 # Roadmap
 | Release      | Timeline | Description |
 | ----------- | ----------- | ----------- |
+| MVP Protocol Demo | 12-Jan-2023 | Demo of the PoB protocol |
 
 
 
-# PoB Protocol - Specification
+# PoB Protocol
 ## Parties Involved
 
 | Party      | Description |
@@ -103,10 +107,19 @@ The figure below illustrates the above functionality.
 
 - Address DDoS attacks and relax the trust assumptions for challengers further
 
+# Licensing
+
+# Contributing
+If you're interested in contributing, please read our [contributing docs](contribution/GUIDELINES.md)
+
 # Acknowledgements
 - Himanshu Tyagi (Kaleidoscope Blockchain)
 - Arun Babu (Kaleidoscope Blockchain)
 - Vishal Sewani (Kaleidoscope Blockchain)
+- Purva Chaudhari (Kaleidoscope Blockchain)
+- Kalpit Fulwariya (Kaleidoscope Blockchain)
+- Peiyao Sheng (Kaleidoscope Blockchain)
+- Ranvir Rana (Kaleidoscope Blockchain)
 
 
 
