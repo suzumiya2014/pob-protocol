@@ -1,0 +1,12 @@
+description: Describes a person as any individual or a smart contract which 
+ has a wallet associated to fund/pay for a challenge.
+type: object
+properties:
+  id:
+    type: string
+    description: Describes the identity of the person/smart contract. 
+     This is the Public Key of the Payer.
+  key_type:
+    type: string
+    description: Describes the blockchain against which 
+     This is the Public Key of the Payer.
