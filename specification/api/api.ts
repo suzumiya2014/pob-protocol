@@ -221,6 +221,7 @@ class ApiProver
 {
 	@request
 	request(
+		@body body: ProverRequest,
 		@headers headers : {
 			"Cookie" : String
 		}
@@ -243,6 +244,10 @@ interface ProverDetails {
 	last_alive		: DateTime;
 	bandwidth_claimed	: Float;
 	results			: ChallengeResult[];
+}
+
+interface ProverRequest {
+	prover : String; 
 }
 
 interface ProverResponse {

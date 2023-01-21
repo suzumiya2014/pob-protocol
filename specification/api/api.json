@@ -186,6 +186,16 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProverRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "200 response",
@@ -559,6 +569,17 @@
         },
         "required": [
           "result"
+        ]
+      },
+      "ProverRequest": {
+        "type": "object",
+        "properties": {
+          "prover": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "prover"
         ]
       },
       "Result": {
