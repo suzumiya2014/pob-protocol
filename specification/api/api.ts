@@ -456,14 +456,38 @@ class ApiHeartbeat
 		}
 	) {}
 
+	/**
+		This opens up a websocket connection.
+		This response is the successful response.
+	**/
+
 	@response({ status: 101 })
-		successfulResponse(
+	successfulResponse(
+		@headers headers : {
+			"Upgrade"	: "websocket",
+			"Connection"	: "Upgrade"
+		}
 	) {}
 
 	@response({ status: 401 })
 	unauthorizedResponse(
 		@body body : FailureResponse
 	) {}
+
+	/** this message is sent to a 'prover' through websocket when a challenge has been scheduled **/
+
+	@response({ status: 1 })
+	wsResponseForProver(
+		@body body : ChallengeInfoForProver 
+	) {}
+
+	/** this message is sent to a 'challenger' through websocket when a challenge has been scheduled **/
+
+	@response({ status: 2 })
+	wsResponseForChallenger(
+		@body body : ChallengeInfoForChallenger
+	) {}
+
 }
 
 interface ChallengeInfoForProver

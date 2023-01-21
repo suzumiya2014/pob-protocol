@@ -414,8 +414,48 @@
           }
         ],
         "responses": {
+          "1": {
+            "description": "this message is sent to a 'prover' through websocket when a challenge has been scheduled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeInfoForProver"
+                }
+              }
+            }
+          },
+          "2": {
+            "description": "this message is sent to a 'challenger' through websocket when a challenge has been scheduled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeInfoForChallenger"
+                }
+              }
+            }
+          },
           "101": {
-            "description": "101 response"
+            "description": "This opens up a websocket connection.\n\t\tThis response is the successful response.",
+            "headers": {
+              "Upgrade": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "websocket"
+                  ]
+                }
+              },
+              "Connection": {
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Upgrade"
+                  ]
+                }
+              }
+            }
           },
           "401": {
             "description": "401 response",
@@ -787,6 +827,152 @@
         "required": [
           "prover",
           "transaction"
+        ]
+      },
+      "Challenger": {
+        "type": "object",
+        "properties": {
+          "ip": {
+            "type": "string"
+          },
+          "publicKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ip",
+          "publicKey"
+        ]
+      },
+      "ChallengeInfoForProver": {
+        "type": "object",
+        "properties": {
+          "message_type": {
+            "type": "string",
+            "enum": [
+              "challenge_for_prover"
+            ]
+          },
+          "message": {
+            "type": "object",
+            "properties": {
+              "challenge_id": {
+                "type": "string"
+              },
+              "challenge_start_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "challenge_timeout": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "challengers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Challenger"
+                }
+              },
+              "max_packets_per_challenger": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "total_num_packets_for_challenge": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "required": [
+              "challenge_id",
+              "challenge_start_time",
+              "challenge_timeout",
+              "challengers",
+              "max_packets_per_challenger",
+              "total_num_packets_for_challenge"
+            ]
+          },
+          "signature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message_type",
+          "message",
+          "signature"
+        ]
+      },
+      "Prover": {
+        "type": "object",
+        "properties": {
+          "ip": {
+            "type": "string"
+          },
+          "publicKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ip",
+          "publicKey"
+        ]
+      },
+      "ChallengeInfoForChallenger": {
+        "type": "object",
+        "properties": {
+          "message_type": {
+            "type": "string",
+            "enum": [
+              "challenge_for_challenger"
+            ]
+          },
+          "message": {
+            "type": "object",
+            "properties": {
+              "challenge_id": {
+                "type": "string"
+              },
+              "prover": {
+                "$ref": "#/components/schemas/Prover"
+              },
+              "challenge_start_time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "challenge_timeout": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "num_packets": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "rate_of_packets_mbps": {
+                "type": "number",
+                "format": "float"
+              },
+              "total_num_packets_for_challenge": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "required": [
+              "challenge_id",
+              "prover",
+              "challenge_start_time",
+              "challenge_timeout",
+              "num_packets",
+              "rate_of_packets_mbps",
+              "total_num_packets_for_challenge"
+            ]
+          },
+          "signature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message_type",
+          "message",
+          "signature"
         ]
       }
     }
