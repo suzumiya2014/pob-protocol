@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "Proof of Backhaul",
-    "version": "0.0.0"
+    "version": "1.0"
   },
   "paths": {
     "/api/pre-login": {
@@ -10,6 +10,7 @@
         "tags": [
           "Auth"
         ],
+        "description": "-----\n\n\tThis API is to be called before logging in.\n\n\tIt will return a 'message' that has to be signed and sent to /login API.\n\n\tThis will also create a cookie; hence must be called in a session.",
         "operationId": "ApiPreLogin",
         "parameters": [],
         "requestBody": {
@@ -69,6 +70,7 @@
         "tags": [
           "Auth"
         ],
+        "description": "-----\n\n\tThis API logs in the user. \n\n\tIt should send back the 'message' that was sent during /pre-login API; \n\n\tand must sign the 'message' using private key\n\n\tand send it in the 'signature' field.",
         "operationId": "ApiLogin",
         "parameters": [
           {
@@ -119,6 +121,7 @@
         "tags": [
           "Auth"
         ],
+        "description": "-----\n\n\tGet logged in user information.",
         "operationId": "ApiUserInfo",
         "parameters": [
           {
@@ -149,6 +152,7 @@
         "tags": [
           "Auth"
         ],
+        "description": "-----\n\n\tLogs out the user.",
         "operationId": "ApiLogout",
         "parameters": [],
         "responses": {
@@ -170,7 +174,18 @@
         "tags": [
           "Prover Information"
         ],
+        "description": "-----\n\n\tGet information about a prover.",
         "operationId": "ApiProver",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "200 response",
@@ -200,10 +215,29 @@
         "tags": [
           "Prover Information"
         ],
+        "description": "-----\n\n\tGet information about all the provers.",
         "operationId": "ApiProvers",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "200 response",
+            "headers": {
+              "Cookie": {
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -233,6 +267,7 @@
         "tags": [
           "Challenge"
         ],
+        "description": "-----\n\n\tRequest to create a new challenge.\t\n\n\tBefore calling this api 'startChallenge()' smart contract must be called.\n\n\tAnd the 'transaction' after calling the startChallenge must be provided.",
         "operationId": "ApiChallengeRequest",
         "parameters": [
           {
@@ -273,6 +308,7 @@
         "tags": [
           "Challenge"
         ],
+        "description": "-----\n\n\tGet the status of a given challenge.",
         "operationId": "ApiChallengeStatus",
         "parameters": [
           {
@@ -313,6 +349,7 @@
         "tags": [
           "Challenge"
         ],
+        "description": "-----\n\n\tPost the results of a challenge.",
         "operationId": "ApiChallengeResult",
         "parameters": [
           {
@@ -353,6 +390,7 @@
         "tags": [
           "Websocket for Heartbeat and Notifications"
         ],
+        "description": "-----\n\n\tA websocket connection for:\n\n\t\t1. Sending heartbeat (websocket ping).\n\t\t2. Receiving notification regarding challenges.",
         "operationId": "ApiHeartbeat",
         "parameters": [
           {
@@ -398,7 +436,12 @@
             "type": "string"
           },
           "role": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "prover",
+              "challenger",
+              "payer"
+            ]
           },
           "projectName": {
             "type": "string"
@@ -566,7 +609,7 @@
           "challenge_start_time"
         ]
       },
-      "Prover": {
+      "ProverDetails": {
         "type": "object",
         "properties": {
           "id": {
@@ -602,7 +645,7 @@
         "type": "object",
         "properties": {
           "result": {
-            "$ref": "#/components/schemas/Prover"
+            "$ref": "#/components/schemas/ProverDetails"
           }
         },
         "required": [
