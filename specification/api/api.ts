@@ -1,4 +1,15 @@
-import { api, body, endpoint, request, response, headers, String } from "@airtasker/spot";
+import {
+	api,
+	body,
+	endpoint,
+	request,
+	response,
+	headers,
+	String,
+	Float,
+	DateTime
+}
+	from "@airtasker/spot";
 
 @api({
 	name	: "Proof of Backhaul"
@@ -9,12 +20,18 @@ class Api {
 ////////////////////////////////////////////////////////////////////////////////
 
 interface SuccessResponse {
+
+	/** successful response has some result **/
+
 	result : {
 		 success : boolean;
 	}
 }
 
 interface FailureResponse {
+
+	/** on failure the message contains the reason for failure **/
+
 	error : {
 		 message : String;
 	}
@@ -81,6 +98,32 @@ class ApiLogin
 
 @endpoint({
 	method	: "POST",
+	path	: "/api/user-info",
+	tags	: ["Auth"]
+})
+class ApiUserInfo
+{
+	@request
+	request(
+		@headers headers : {
+			"Cookie" : String
+		}
+	) {}
+
+	@response({ status: 200 })
+	successfulResponse(
+		@body body: UserInfoResponse 
+	) {}
+}
+
+interface UserInfoResponse {
+	result : {
+		publicKey : String;
+	}
+}
+
+@endpoint({
+	method	: "POST",
 	path	: "/api/logout",
 	tags	: ["Auth"]
 })
@@ -103,20 +146,94 @@ interface PreloginRequest {
 	role			: String;
 	projectName		: String;
 	projectPublicKey	: String;
-	bandwidth_claimed	: number; // make it camel case
+	bandwidth_claimed	: Float; // make it camel case
 }
 
 interface PreloginResponse {
 	result : {
+
+		/** to be signed and sent in '/login' API **/
 		message : String;
 	}
 }
 
 interface LoginRequest {
+
+	/** the message received in /pre-login API **/
 	message		: String;
+
+	/** the signature afer signing the message with private key **/
 	signature	: String;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+@endpoint({
+	method	: "POST",
+	path	: "/api/prover",
+	tags	: ["Prover Information"]
+})
+class ApiProver
+{
+	@response({ status: 200 })
+	successfulResponse(
+		@body body : ProverResponse 
+	) {}
+
+	@response({ status: 401 })
+	authFailureResponse(
+		@body body : FailureResponse
+	) {}
+}
+
+interface Prover {
+	id			: String;
+	geoip			: String;
+	last_alive		: DateTime;
+	bandwidth_claimed	: Float;
+	results			: ChallengeResult[];
+}
+
+interface ProverResponse {
+	result : Prover
+}
+
+interface ChallengeResult {
+	result			: Result[],
+	message			: String,
+	signature		: String,
+	challenger		: String,
+	challenge_start_time	: DateTime,
+}
+
+interface Result {
+	bandwidth	: Float,
+	latency		: Float
+}
+
+@endpoint({
+	method	: "POST",
+	path	: "/api/provers",
+	tags	: ["Prover Information"]
+})
+class ApiProvers
+{
+	@response({ status: 200 })
+	successfulResponse(
+		@body body : ProversResponse[] 
+	) {}
+
+	@response({ status: 401 })
+	authFailureResponse(
+		@body body : FailureResponse
+	) {}
+}
+
+interface ProversResponse {
+	result : {
+		provers : String[];
+	}
+}
 ////////////////////////////////////////////////////////////////////////////////
 
 @endpoint({
@@ -176,7 +293,7 @@ class ApiChallengeStatus
 }
 
 interface ChallengeStatusRequest {
-	transaction	: String;
+	transaction : String;
 }
 
 interface ChallengeStatusResponse {
@@ -184,7 +301,7 @@ interface ChallengeStatusResponse {
 		 challenge_id			: String;
 		 challenge_status		: String;
 		 start_challenge_transaction	: String;
-		 end_challenge_transaction	: String;
+		 end_challenge_transaction?	: String;
 	}
 }
 
@@ -192,7 +309,7 @@ interface ChallengeStatusResponse {
 
 @endpoint({
 	method	: "GET",
-	path	: "/",
+	path	: "/ws",
 	tags	: ["Websocket for Heartbeat and Notifications"]
 })
 class ApiHeartbeat
@@ -200,12 +317,15 @@ class ApiHeartbeat
 	@request
 	request(
 		@headers headers : {
+
+			/** this cookie should come from the result of /login API **/
+
 			"Cookie" : String
 		}
 	) {}
 
 	@response({ status: 101 })
-	successfulResponse(
+		successfulResponse(
 	) {}
 
 	@response({ status: 401 })

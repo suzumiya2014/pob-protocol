@@ -114,6 +114,36 @@
         }
       }
     },
+    "/api/user-info": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "ApiUserInfo",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/logout": {
       "post": {
         "tags": [
@@ -128,6 +158,69 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/prover": {
+      "post": {
+        "tags": [
+          "Prover Information"
+        ],
+        "operationId": "ApiProver",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProverResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/provers": {
+      "post": {
+        "tags": [
+          "Prover Information"
+        ],
+        "operationId": "ApiProvers",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProversResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
                 }
               }
             }
@@ -215,7 +308,7 @@
         }
       }
     },
-    "/": {
+    "/ws": {
       "get": {
         "tags": [
           "Websocket for Heartbeat and Notifications"
@@ -225,6 +318,7 @@
           {
             "name": "Cookie",
             "in": "header",
+            "description": "this cookie should come from the result of /login API",
             "required": true,
             "schema": {
               "type": "string"
@@ -293,7 +387,8 @@
             "type": "object",
             "properties": {
               "message": {
-                "type": "string"
+                "type": "string",
+                "description": "to be signed and sent in '/login' API"
               }
             },
             "required": [
@@ -317,7 +412,8 @@
             },
             "required": [
               "message"
-            ]
+            ],
+            "description": "on failure the message contains the reason for failure"
           }
         },
         "required": [
@@ -328,10 +424,12 @@
         "type": "object",
         "properties": {
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "the message received in /pre-login API"
           },
           "signature": {
-            "type": "string"
+            "type": "string",
+            "description": "the signature afer signing the message with private key"
           }
         },
         "required": [
@@ -351,6 +449,139 @@
             },
             "required": [
               "success"
+            ],
+            "description": "successful response has some result"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "UserInfoResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "properties": {
+              "publicKey": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "publicKey"
+            ]
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "Result": {
+        "type": "object",
+        "properties": {
+          "bandwidth": {
+            "type": "number",
+            "format": "float"
+          },
+          "latency": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "required": [
+          "bandwidth",
+          "latency"
+        ]
+      },
+      "ChallengeResult": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Result"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "signature": {
+            "type": "string"
+          },
+          "challenger": {
+            "type": "string"
+          },
+          "challenge_start_time": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "result",
+          "message",
+          "signature",
+          "challenger",
+          "challenge_start_time"
+        ]
+      },
+      "Prover": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "geoip": {
+            "type": "string"
+          },
+          "last_alive": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "bandwidth_claimed": {
+            "type": "number",
+            "format": "float"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChallengeResult"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "geoip",
+          "last_alive",
+          "bandwidth_claimed",
+          "results"
+        ]
+      },
+      "ProverResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/Prover"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "ProversResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "properties": {
+              "provers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "provers"
             ]
           }
         },
@@ -429,8 +660,7 @@
             "required": [
               "challenge_id",
               "challenge_status",
-              "start_challenge_transaction",
-              "end_challenge_transaction"
+              "start_challenge_transaction"
             ]
           }
         },
