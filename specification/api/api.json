@@ -308,6 +308,46 @@
         }
       }
     },
+    "/api/challenge-result": {
+      "post": {
+        "tags": [
+          "Challenge"
+        ],
+        "operationId": "ApiChallengeResult",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChallengeResultRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ws": {
       "get": {
         "tags": [
@@ -464,7 +504,9 @@
             "type": "object",
             "properties": {
               "publicKey": {
-                "type": "string"
+                "type": "string",
+                "nullable": true,
+                "description": "will return 'null' if the user has not logged in"
               }
             },
             "required": [
@@ -666,6 +708,21 @@
         },
         "required": [
           "result"
+        ]
+      },
+      "ChallengeResultRequest": {
+        "type": "object",
+        "properties": {
+          "prover": {
+            "type": "string"
+          },
+          "transaction": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "prover",
+          "transaction"
         ]
       }
     }

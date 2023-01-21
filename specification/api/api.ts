@@ -118,7 +118,8 @@ class ApiUserInfo
 
 interface UserInfoResponse {
 	result : {
-		publicKey : String;
+		/** will return 'null' if the user has not logged in **/
+		publicKey : String | null;
 	}
 }
 
@@ -236,6 +237,19 @@ interface ProversResponse {
 }
 ////////////////////////////////////////////////////////////////////////////////
 
+
+interface ChallengeRequest {
+	prover		: String;
+	transaction	: String;
+}
+
+interface ChallengeResponse {
+	result : {
+		 challenge_id		: String;
+		 challenge_status	: String;
+	}
+}
+
 @endpoint({
 	method	: "POST",
 	path	: "/api/challenge-request",
@@ -258,18 +272,6 @@ class ApiChallengeRequest
 	) {}
 }
 
-interface ChallengeRequest {
-	prover		: String;
-	transaction	: String;
-}
-
-interface ChallengeResponse {
-	result : {
-		 challenge_id		: String;
-		 challenge_status	: String;
-	}
-}
-
 @endpoint({
 	method	: "POST",
 	path	: "/api/challenge-status",
@@ -290,6 +292,36 @@ class ApiChallengeStatus
 	successfulResponse(
 		@body body: ChallengeStatusResponse
 	) {}
+}
+
+
+
+
+@endpoint({
+	method	: "POST",
+	path	: "/api/challenge-result",
+	tags	: ["Challenge"]
+})
+class ApiChallengeResult 
+{
+	@request
+	request(
+		@body body: ChallengeResultRequest,
+
+		@headers headers : {
+			"Cookie" : String
+		}
+	) {}
+
+	@response({ status: 200 })
+	successfulResponse(
+		@body body: ChallengeResponse 
+	) {}
+}
+
+interface ChallengeResultRequest {
+	prover		: String;
+	transaction	: String;
 }
 
 interface ChallengeStatusRequest {
