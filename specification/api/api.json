@@ -318,7 +318,7 @@
         "tags": [
           "Challenge"
         ],
-        "description": "-----\n\n\tGet the status of a given challenge.",
+        "description": "-----\n\tGet the status of a given challenge.",
         "operationId": "ApiChallengeStatus",
         "parameters": [
           {
@@ -359,7 +359,7 @@
         "tags": [
           "Challenge"
         ],
-        "description": "-----\n\n\tPost the results of a challenge.",
+        "description": "-----\n\tPost the results of a challenge.",
         "operationId": "ApiChallengeResult",
         "parameters": [
           {
@@ -400,13 +400,13 @@
         "tags": [
           "Websocket for Heartbeat and Notifications"
         ],
-        "description": "-----\n\n\tA websocket connection for:\n\n\t\t1. Sending heartbeat (websocket ping).\n\t\t2. Receiving notification regarding challenges.",
+        "description": "-----\n\tA websocket connection for:\n\n\t\t1. Sending heartbeat (websocket ping).\n\t\t2. Receiving notification regarding challenges.",
         "operationId": "ApiHeartbeat",
         "parameters": [
           {
             "name": "Cookie",
             "in": "header",
-            "description": "this cookie should come from the result of /login API",
+            "description": "-----\n\n\tthis cookie should come from the result of /login API",
             "required": true,
             "schema": {
               "type": "string"
@@ -414,28 +414,8 @@
           }
         ],
         "responses": {
-          "1": {
-            "description": "this message is sent to a 'prover' through websocket when a challenge has been scheduled",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChallengeInfoForProver"
-                }
-              }
-            }
-          },
-          "2": {
-            "description": "this message is sent to a 'challenger' through websocket when a challenge has been scheduled",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChallengeInfoForChallenger"
-                }
-              }
-            }
-          },
           "101": {
-            "description": "This opens up a websocket connection.\n\t\tThis response is the successful response.",
+            "description": "-----\n\n\tThis opens up a websocket connection.\n\tThis response is the successful response.",
             "headers": {
               "Upgrade": {
                 "required": true,
@@ -453,6 +433,26 @@
                   "enum": [
                     "Upgrade"
                   ]
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "-----\n\n\tthis message is sent to a 'prover' through websocket when a challenge has been scheduled\n\n\t// ignore the status code given here.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeInfoForProver"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "-----\n\n\tthis message is sent to a 'challenger' through websocket when a challenge has been scheduled\n\n\t// ignore the status code given here.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeInfoForChallenger"
                 }
               }
             }
@@ -521,7 +521,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "description": "to be signed and sent in '/login' API"
+                "description": "-----\n\tto be signed and sent in '/login' API"
               }
             },
             "required": [
@@ -546,7 +546,7 @@
             "required": [
               "message"
             ],
-            "description": "on failure the message contains the reason for failure"
+            "description": "-----\n\ton failure the message contains the reason for failure"
           }
         },
         "required": [
@@ -558,11 +558,11 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "the message received in /pre-login API"
+            "description": "-----\n\tthe message received in /pre-login API"
           },
           "signature": {
             "type": "string",
-            "description": "the signature afer signing the message with private key"
+            "description": "-----\n\tthe signature afer signing the message with private key"
           }
         },
         "required": [
@@ -583,7 +583,7 @@
             "required": [
               "success"
             ],
-            "description": "successful response has some result"
+            "description": "-----\n\tsuccessful response has some result"
           }
         },
         "required": [
@@ -599,7 +599,7 @@
               "publicKey": {
                 "type": "string",
                 "nullable": true,
-                "description": "will return 'null' if the user has not logged in"
+                "description": "-----\n\n\twill return 'null' if the user has not logged in"
               }
             },
             "required": [

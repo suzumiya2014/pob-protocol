@@ -23,7 +23,9 @@ class Api {
 
 interface SuccessResponse {
 
-	/** successful response has some result **/
+	/** -----
+	successful response has some result
+	**/
 
 	result : {
 		 success : boolean;
@@ -32,7 +34,9 @@ interface SuccessResponse {
 
 interface FailureResponse {
 
-	/** on failure the message contains the reason for failure **/
+	/** -----
+	on failure the message contains the reason for failure
+	**/
 
 	error : {
 		 message : String;
@@ -149,16 +153,20 @@ class ApiUserInfo
 
 interface UserInfoResponse {
 	result : {
-		/** will return 'null' if the user has not logged in **/
+	/**
+	-----
+
+	will return 'null' if the user has not logged in
+	**/
 		publicKey : String | null;
 	}
 }
 
-/**
+	/**
 	-----
 
 	Logs out the user.
-**/
+	**/
 
 @endpoint({
 	method	: "POST",
@@ -190,27 +198,36 @@ interface PreloginRequest {
 interface PreloginResponse {
 	result : {
 
-		/** to be signed and sent in '/login' API **/
+	/**
+	-----
+	to be signed and sent in '/login' API
+	**/
 		message : String;
 	}
 }
 
 interface LoginRequest {
 
-	/** the message received in /pre-login API **/
+	/**
+	-----
+	the message received in /pre-login API
+	**/
 	message		: String;
 
-	/** the signature afer signing the message with private key **/
+	/**
+	-----
+	the signature afer signing the message with private key
+	**/
 	signature	: String;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/**
+	/**
 	-----
 
 	Get information about a prover.	
-**/
+	**/
 
 @endpoint({
 	method	: "POST",
@@ -267,11 +284,11 @@ interface Result {
 	latency		: Float
 }
 
-/**
+	/**
 	-----
 
 	Get information about all the provers. 
-**/
+	**/
 
 @endpoint({
 	method	: "POST",
@@ -322,7 +339,7 @@ interface ChallengeResponse {
 }
 
 
-/**
+	/**
 	-----
 
 	Request to create a new challenge.	
@@ -330,7 +347,7 @@ interface ChallengeResponse {
 	Before calling this api 'startChallenge()' smart contract must be called.
 
 	And the 'transaction' after calling the startChallenge must be provided.
-**/
+	**/
 
 @endpoint({
 	method	: "POST",
@@ -354,11 +371,10 @@ class ApiChallengeRequest
 	) {}
 }
 
-/**
+	/**
 	-----
-
 	Get the status of a given challenge.	
-**/
+	**/
 
 @endpoint({
 	method	: "POST",
@@ -382,11 +398,10 @@ class ApiChallengeStatus
 	) {}
 }
 
-/**
+	/**
 	-----
-
 	Post the results of a challenge.	
-**/
+	**/
 
 @endpoint({
 	method	: "POST",
@@ -430,14 +445,13 @@ interface ChallengeStatusResponse {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/**
+	/**
 	-----
-
 	A websocket connection for:
 
 		1. Sending heartbeat (websocket ping).
 		2. Receiving notification regarding challenges.
-**/
+	**/
 
 @endpoint({
 	method	: "GET",
@@ -450,15 +464,21 @@ class ApiHeartbeat
 	request(
 		@headers headers : {
 
-			/** this cookie should come from the result of /login API **/
+/**
+	-----
+
+	this cookie should come from the result of /login API
+**/
 
 			"Cookie" : String
 		}
 	) {}
 
 	/**
-		This opens up a websocket connection.
-		This response is the successful response.
+	-----
+
+	This opens up a websocket connection.
+	This response is the successful response.
 	**/
 
 	@response({ status: 101 })
@@ -474,16 +494,28 @@ class ApiHeartbeat
 		@body body : FailureResponse
 	) {}
 
-	/** this message is sent to a 'prover' through websocket when a challenge has been scheduled **/
+	/**
+	-----
 
-	@response({ status: 1 })
+	this message is sent to a 'prover' through websocket when a challenge has been scheduled
+
+	// ignore the status code given here.
+	**/
+
+	@response({ status: 201 })
 	wsResponseForProver(
 		@body body : ChallengeInfoForProver 
 	) {}
 
-	/** this message is sent to a 'challenger' through websocket when a challenge has been scheduled **/
+	/**
+	-----
 
-	@response({ status: 2 })
+	this message is sent to a 'challenger' through websocket when a challenge has been scheduled
+
+	// ignore the status code given here.
+	**/
+
+	@response({ status: 202 })
 	wsResponseForChallenger(
 		@body body : ChallengeInfoForChallenger
 	) {}
