@@ -1,65 +1,90 @@
-import { api, body, endpoint, request, response, String } from "@airtasker/spot";
+import { api, body, endpoint, request, response, headers, String } from "@airtasker/spot";
 
 @api({
-	name	: "Proof of Backhaul" 
+	name	: "Proof of Backhaul"
 })
 class Api {
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+interface SuccessResponse {
+	result : {
+		 success : boolean;
+	}
+}
+
+interface FailureResponse {
+	error : {
+		 message : String;
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 @endpoint({
 	method	: "POST",
-	path	: "/pre-login"
+	path	: "/api/pre-login",
+	tags	: ["Auth"]
 })
-class PreLogin 
+class ApiPreLogin
 {
 	@request
 	request(
-		@body body: PreloginRequest 
+		@body body: PreloginRequest
 	) {}
 
 	@response({ status: 200 })
 	successfulResponse(
-		@body body: PreloginResponse 
+		@body body: PreloginResponse,
+		@headers headers : {
+			"Set-Cookie" : String
+		}
 	) {}
 
 	@response({ status: 400 })
 	badRequestResponse(
-		@body body: FailureResponse 
+		@body body: FailureResponse
 	) {}
 
 	@response({ status: 401 })
 	authFailureResponse(
-		@body body: FailureResponse 
+		@body body: FailureResponse
 	) {}
 }
 
 @endpoint({
 	method	: "POST",
-	path	: "/login"
+	path	: "/api/login",
+	tags	: ["Auth"]
 })
-class Login 
+class ApiLogin
 {
 	@request
 	request(
-		@body body: LoginRequest 
+		@body body: LoginRequest,
+		@headers headers : {
+			"Cookie" : String
+		}
 	) {}
 
 	@response({ status: 200 })
 	successfulResponse(
-		@body body: SuccessResponse 
+		@body body: SuccessResponse
 	) {}
 
 	@response({ status: 400 })
 	badRequestResponse(
-		@body body: FailureResponse 
+		@body body: FailureResponse,
 	) {}
 }
 
 @endpoint({
 	method	: "POST",
-	path	: "/logout"
+	path	: "/api/logout",
+	tags	: ["Auth"]
 })
-class Logout
+class ApiLogout
 {
 	@request
 	request(
@@ -67,13 +92,13 @@ class Logout
 
 	@response({ status: 200 })
 	successfulResponse(
-		@body body: SuccessResponse 
+		@body body: SuccessResponse
 	) {}
 }
 
 interface PreloginRequest {
 	publicKey		: String;
-	walletPublicKey		: String;		
+	walletPublicKey?	: String;
 	keyType			: String;
 	role			: String;
 	projectName		: String;
@@ -92,14 +117,99 @@ interface LoginRequest {
 	signature	: String;
 }
 
-interface SuccessResponse {
+////////////////////////////////////////////////////////////////////////////////
+
+@endpoint({
+	method	: "POST",
+	path	: "/api/challenge-request",
+	tags	: ["Challenge"]
+})
+class ApiChallengeRequest 
+{
+	@request
+	request(
+		@body body: ChallengeRequest,
+
+		@headers headers : {
+			"Cookie" : String
+		}
+	) {}
+
+	@response({ status: 200 })
+	successfulResponse(
+		@body body: ChallengeResponse 
+	) {}
+}
+
+interface ChallengeRequest {
+	prover		: String;
+	transaction	: String;
+}
+
+interface ChallengeResponse {
 	result : {
-		 success : boolean;
+		 challenge_id		: String;
+		 challenge_status	: String;
 	}
 }
 
-interface FailureResponse {
-	error : {
-		 message : String;
+@endpoint({
+	method	: "POST",
+	path	: "/api/challenge-status",
+	tags	: ["Challenge"]
+})
+class ApiChallengeStatus
+{
+	@request
+	request(
+		@body body: ChallengeStatusRequest,
+
+		@headers headers : {
+			"Cookie" : String
+		}
+	) {}
+
+	@response({ status: 200 })
+	successfulResponse(
+		@body body: ChallengeStatusResponse
+	) {}
+}
+
+interface ChallengeStatusRequest {
+	transaction	: String;
+}
+
+interface ChallengeStatusResponse {
+	result : {
+		 challenge_id			: String;
+		 challenge_status		: String;
+		 start_challenge_transaction	: String;
+		 end_challenge_transaction	: String;
 	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+@endpoint({
+	method	: "GET",
+	path	: "/",
+	tags	: ["Websocket for Heartbeat and Notifications"]
+})
+class ApiHeartbeat
+{
+	@request
+	request(
+		@headers headers : {
+			"Cookie" : String
+		}
+	) {}
+
+	@response({ status: 101 })
+	successfulResponse(
+	) {}
+
+	@response({ status: 401 })
+	authFailureResponse(
+		@body body : FailureResponse
+	) {}
 }

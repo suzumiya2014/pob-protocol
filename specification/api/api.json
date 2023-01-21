@@ -5,9 +5,12 @@
     "version": "0.0.0"
   },
   "paths": {
-    "/pre-login": {
+    "/api/pre-login": {
       "post": {
-        "operationId": "PreLogin",
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "ApiPreLogin",
         "parameters": [],
         "requestBody": {
           "content": {
@@ -22,6 +25,14 @@
         "responses": {
           "200": {
             "description": "200 response",
+            "headers": {
+              "Set-Cookie": {
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -53,10 +64,22 @@
         }
       }
     },
-    "/login": {
+    "/api/login": {
       "post": {
-        "operationId": "Login",
-        "parameters": [],
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "ApiLogin",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -91,9 +114,12 @@
         }
       }
     },
-    "/logout": {
+    "/api/logout": {
       "post": {
-        "operationId": "Logout",
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "ApiLogout",
         "parameters": [],
         "responses": {
           "200": {
@@ -102,6 +128,119 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/challenge-request": {
+      "post": {
+        "tags": [
+          "Challenge"
+        ],
+        "operationId": "ApiChallengeRequest",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChallengeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/challenge-status": {
+      "post": {
+        "tags": [
+          "Challenge"
+        ],
+        "operationId": "ApiChallengeStatus",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChallengeStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "Websocket for Heartbeat and Notifications"
+        ],
+        "operationId": "ApiHeartbeat",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "101": {
+            "description": "101 response"
+          },
+          "401": {
+            "description": "401 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
                 }
               }
             }
@@ -140,7 +279,6 @@
         },
         "required": [
           "publicKey",
-          "walletPublicKey",
           "keyType",
           "role",
           "projectName",
@@ -213,6 +351,86 @@
             },
             "required": [
               "success"
+            ]
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "ChallengeRequest": {
+        "type": "object",
+        "properties": {
+          "prover": {
+            "type": "string"
+          },
+          "transaction": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "prover",
+          "transaction"
+        ]
+      },
+      "ChallengeResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "properties": {
+              "challenge_id": {
+                "type": "string"
+              },
+              "challenge_status": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "challenge_id",
+              "challenge_status"
+            ]
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "ChallengeStatusRequest": {
+        "type": "object",
+        "properties": {
+          "transaction": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "transaction"
+        ]
+      },
+      "ChallengeStatusResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "properties": {
+              "challenge_id": {
+                "type": "string"
+              },
+              "challenge_status": {
+                "type": "string"
+              },
+              "start_challenge_transaction": {
+                "type": "string"
+              },
+              "end_challenge_transaction": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "challenge_id",
+              "challenge_status",
+              "start_challenge_transaction",
+              "end_challenge_transaction"
             ]
           }
         },
