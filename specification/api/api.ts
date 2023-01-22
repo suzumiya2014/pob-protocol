@@ -52,7 +52,9 @@ interface FailureResponse {
 
 	It will return a 'message' that has to be signed and sent to '/login' API.
 
-	This will also create a cookie; hence the '/login' API must be called in a session.
+	This will also create a cookie;
+
+	hence the '/login' API must be called in a session.
 **/
 
 @endpoint({
@@ -187,7 +189,7 @@ interface PreloginResponse {
 
 	This API logs in the user.
 
-	The user should send the 'message' that was received during the '/pre-login' API;
+	The user should send the 'message' that was received during the '/pre-login';
 
 	and must sign the 'message' using privateKey.
 
@@ -641,7 +643,9 @@ class ApiHeartbeat
 	/**
 	-----
 
-	This message is sent to a 'prover' through websocket when a challenge has been scheduled
+	This message is sent to a 'prover' through websocket when a challenge
+
+	has been scheduled
 
 	// ignore the status code 201 given here.
 	**/
@@ -654,7 +658,9 @@ class ApiHeartbeat
 	/**
 	-----
 
-	This message is sent to a 'challenger' through websocket when a challenge has been scheduled
+	This message is sent to a 'challenger' through websocket when a challenge
+
+	has been scheduled
 
 	// ignore the status code 202 given here.
 	**/

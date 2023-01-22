@@ -10,7 +10,7 @@
         "tags": [
           "Auth"
         ],
-        "description": "-----\n\n\tThis API is to be called before logging in.\n\n\tIt will return a 'message' that has to be signed and sent to '/login' API.\n\n\tThis will also create a cookie; hence the '/login' API must be called in a session.",
+        "description": "-----\n\n\tThis API is to be called before logging in.\n\n\tIt will return a 'message' that has to be signed and sent to '/login' API.\n\n\tThis will also create a cookie;\n\n\thence the '/login' API must be called in a session.",
         "operationId": "ApiPreLogin",
         "parameters": [],
         "requestBody": {
@@ -71,7 +71,7 @@
         "tags": [
           "Auth"
         ],
-        "description": "-----\n\n\tThis API logs in the user.\n\n\tThe user should send the 'message' that was received during the '/pre-login' API;\n\n\tand must sign the 'message' using privateKey.\n\n\tAnd send it in the 'signature' field.",
+        "description": "-----\n\n\tThis API logs in the user.\n\n\tThe user should send the 'message' that was received during the '/pre-login';\n\n\tand must sign the 'message' using privateKey.\n\n\tAnd send it in the 'signature' field.",
         "operationId": "ApiLogin",
         "parameters": [
           {
@@ -448,7 +448,7 @@
             }
           },
           "201": {
-            "description": "-----\n\n\tThis message is sent to a 'prover' through websocket when a challenge has been scheduled\n\n\t// ignore the status code 201 given here.",
+            "description": "-----\n\n\tThis message is sent to a 'prover' through websocket when a challenge\n\n\thas been scheduled\n\n\t// ignore the status code 201 given here.",
             "content": {
               "application/json": {
                 "schema": {
@@ -458,7 +458,7 @@
             }
           },
           "202": {
-            "description": "-----\n\n\tThis message is sent to a 'challenger' through websocket when a challenge has been scheduled\n\n\t// ignore the status code 202 given here.",
+            "description": "-----\n\n\tThis message is sent to a 'challenger' through websocket when a challenge\n\n\thas been scheduled\n\n\t// ignore the status code 202 given here.",
             "content": {
               "application/json": {
                 "schema": {
