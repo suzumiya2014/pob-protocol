@@ -24,7 +24,7 @@ class Api {
 interface SuccessResponse {
 
 	/** -----
-	successful response has some result
+	Successful response always has a valid 'result'.
 	**/
 
 	result : {
@@ -35,7 +35,7 @@ interface SuccessResponse {
 interface FailureResponse {
 
 	/** -----
-	on failure the message contains the reason for failure
+	On failure, the 'error.message' contains the reason for the failure.
 	**/
 
 	error : {
@@ -50,9 +50,9 @@ interface FailureResponse {
 
 	This API is to be called before logging in.
 
-	It will return a 'message' that has to be signed and sent to /login API.
+	It will return a 'message' that has to be signed and sent to '/login' API.
 
-	This will also create a cookie; hence must be called in a session.
+	This will also create a cookie; hence the '/login' API must be called in a session.
 **/
 
 @endpoint({
@@ -86,16 +86,109 @@ class ApiPreLogin
 	) {}
 }
 
+interface PreloginRequest {
+	/**
+	-----
+	The key used for login
+	**/
+
+	publicKey		: String;
+
+	/**
+	-----
+	The wallet where all the rewards go.
+
+	if 'walletPublicKey' is NOT provided, then:
+		walletPublicKey = publicKey
+	**/
+
+	walletPublicKey?	: String;
+
+	/**
+	-----
+	The key-type of publicKey.
+
+	As of now these are supported keyTypes:
+		1. solana
+	**/
+	keyType			: "solana";
+
+	/**
+	-----
+ 	The role the user intends to play after login:
+
+		1. prover
+			User who wants to prove what it offers to the network.
+
+			Example: 'bandwidth', 'latency', 'disk', 'cpu' etc.
+
+		2. challenger
+			User who wants to challenge a 'prover'
+			and earn rewards.
+
+		3. payer
+			An abstract entity/user who pays
+			and requests for a challenge.
+
+			A payer could be:
+			the 'prover' itself, other users, or the blockchain.
+	**/
+
+	role			: "prover" | "challenger" | "payer";
+
+	/**
+	-----
+	If the user is also part of another blockchain project/app,
+
+	then the project-name/app-name can be provided here.
+
+		e.g. "filecoin", "filecoin-station", "oort", etc.
+	**/
+
+	projectName?		: String;
+
+	/**
+	-----
+	publicKey of the user associated with the
+
+	'projectName' blockchain project/app.
+	**/
+
+	projectPublicKey?	: String;
+
+	/**
+	-----
+	The amount of bandwidth in Mbps the user has
+		OR
+	wants to claim.
+	**/
+
+	bandwidth_claimed	: Float;	// make it camel case
+}
+
+interface PreloginResponse {
+	result : {
+
+	/**
+	-----
+	A string to be signed using user's 'privateKey' to create a 'signature'.
+
+	This 'signature' should be later sent in the '/login' API to login.
+	**/
+		message : String;
+	}
+}
+
 /**
 	-----
 
-	This API logs in the user. 
+	This API logs in the user.
 
-	It should send back the 'message' that was sent during /pre-login API; 
+	It should send back the 'message' that was sent during the '/pre-login' API;
 
 	and must sign the 'message' using private key
 
-	and send it in the 'signature' field.	
+	and send it in the 'signature' field.
 **/
 
 
@@ -147,7 +240,7 @@ class ApiUserInfo
 
 	@response({ status: 200 })
 	successfulResponse(
-		@body body: UserInfoResponse 
+		@body body: UserInfoResponse
 	) {}
 }
 
@@ -185,38 +278,18 @@ class ApiLogout
 	) {}
 }
 
-interface PreloginRequest {
-	publicKey		: String;
-	walletPublicKey?	: String;
-	keyType			: String;
-	role			: "prover" | "challenger" | "payer";
-	projectName		: String;
-	projectPublicKey	: String;
-	bandwidth_claimed	: Float; // make it camel case
-}
-
-interface PreloginResponse {
-	result : {
-
-	/**
-	-----
-	to be signed and sent in '/login' API
-	**/
-		message : String;
-	}
-}
 
 interface LoginRequest {
 
 	/**
 	-----
-	the message received in /pre-login API
+	The 'message' received in the '/pre-login' API.
 	**/
 	message		: String;
 
 	/**
 	-----
-	the signature afer signing the message with private key
+	The signature afer signing the 'message' with the 'privateKey'.
 	**/
 	signature	: String;
 }
@@ -226,7 +299,7 @@ interface LoginRequest {
 	/**
 	-----
 
-	Get information about a prover.	
+	Get information about a prover.
 	**/
 
 @endpoint({
@@ -256,18 +329,67 @@ class ApiProver
 }
 
 interface ProverDetails {
+	/**
+	-----
+	The unique 'id' of the prover.
+	**/
 	id			: String;
-	geoip			: String;
+
+	/**
+	-----
+	The estimate of geographic information based on IP address, please refer:
+		https://www.npmjs.com/package/fast-geoip	
+	**/
+	geoip			: GeoIP;
+
+	/**
+	-----
+	The latest time when the API server received a handshake from the prover.
+	**/
 	last_alive		: DateTime;
+
+	/**
+	-----
+ 	The amount of bandwidth in Mbps the user has OR wants to claim.
+	**/
+
 	bandwidth_claimed	: Float;
+
+	/**
+	-----
+ 	The history of challenge results the proved has participated in.
+	**/
+
 	results			: ChallengeResult[];
 }
 
+
+interface GeoIP {
+	range	: Integer[];	// [ 3479298048, 3479300095 ],
+	country	: String;	// 'US',
+	region  : String;	// 'TX',
+	eu	: "0" | "1";	//
+	timezone: String;	// 'America/Chicago',
+	city	: String;	// 'San Antonio',
+	ll	: Float[];	// [ 29.4969, -98.4032 ],
+	metro	: Integer;	// 641,
+	area	: Integer;	// 1000
+}
+
+
 interface ProverRequest {
-	prover : String; 
+	/**
+	-----
+ 	The id of the prover.
+	**/
+	prover : String;
 }
 
 interface ProverResponse {
+	/**
+	-----
+ 	The details of the prover. 
+	**/
 	result : ProverDetails
 }
 
@@ -287,7 +409,7 @@ interface Result {
 	/**
 	-----
 
-	Get information about all the provers. 
+	Get information about all the provers.
 	**/
 
 @endpoint({
@@ -333,8 +455,11 @@ interface ChallengeRequest {
 
 interface ChallengeResponse {
 	result : {
-		 challenge_id		: String;
-		 challenge_status	: String;
+		 challenge_id     : String;
+		 challenge_status : "SUBMITTED_TO_CHALLENGE_COORDINATOR" |
+                                    "ACCEPTED_BY_CHALLENGE_COORDINATOR"  |
+                                    "ERROR_NOT_ENOUGH_CHALLENGERS"       |
+                                    "ENDED_SUCCESSFULLY";
 	}
 }
 
@@ -342,7 +467,7 @@ interface ChallengeResponse {
 	/**
 	-----
 
-	Request to create a new challenge.	
+	Request to create a new challenge.
 
 	Before calling this api 'startChallenge()' smart contract must be called.
 
@@ -354,7 +479,7 @@ interface ChallengeResponse {
 	path	: "/api/challenge-request",
 	tags	: ["Challenge"]
 })
-class ApiChallengeRequest 
+class ApiChallengeRequest
 {
 	@request
 	request(
@@ -367,13 +492,13 @@ class ApiChallengeRequest
 
 	@response({ status: 200 })
 	successfulResponse(
-		@body body: ChallengeResponse 
+		@body body: ChallengeResponse
 	) {}
 }
 
 	/**
 	-----
-	Get the status of a given challenge.	
+	Get the status of a given challenge.
 	**/
 
 @endpoint({
@@ -400,7 +525,7 @@ class ApiChallengeStatus
 
 	/**
 	-----
-	Post the results of a challenge.	
+	Post the results of a challenge.
 	**/
 
 @endpoint({
@@ -408,7 +533,7 @@ class ApiChallengeStatus
 	path	: "/api/challenge-result",
 	tags	: ["Challenge"]
 })
-class ApiChallengeResult 
+class ApiChallengeResult
 {
 	@request
 	request(
@@ -421,7 +546,7 @@ class ApiChallengeResult
 
 	@response({ status: 200 })
 	successfulResponse(
-		@body body: ChallengeResponse 
+		@body body: ChallengeResponse
 	) {}
 }
 
@@ -437,9 +562,13 @@ interface ChallengeStatusRequest {
 interface ChallengeStatusResponse {
 	result : {
 		 challenge_id			: String;
-		 challenge_status		: String;
 		 start_challenge_transaction	: String;
 		 end_challenge_transaction?	: String;
+                 challenge_status		: "SUBMITTED_TO_CHALLENGE_COORDINATOR"		|
+							"ACCEPTED_BY_CHALLENGE_COORDINATOR"	|
+							"ERROR_NOT_ENOUGH_CHALLENGERS"		|
+							"ENDED_SUCCESSFULLY";
+
 	}
 }
 
@@ -467,7 +596,7 @@ class ApiHeartbeat
 /**
 	-----
 
-	this cookie should come from the result of /login API
+	This cookie should come from the result of '/login' API
 **/
 
 			"Cookie" : String
@@ -478,6 +607,7 @@ class ApiHeartbeat
 	-----
 
 	This opens up a websocket connection.
+
 	This response is the successful response.
 	**/
 
@@ -497,22 +627,22 @@ class ApiHeartbeat
 	/**
 	-----
 
-	this message is sent to a 'prover' through websocket when a challenge has been scheduled
+	This message is sent to a 'prover' through websocket when a challenge has been scheduled
 
-	// ignore the status code given here.
+	// ignore the status code 201 given here.
 	**/
 
 	@response({ status: 201 })
 	wsResponseForProver(
-		@body body : ChallengeInfoForProver 
+		@body body : ChallengeInfoForProver
 	) {}
 
 	/**
 	-----
 
-	this message is sent to a 'challenger' through websocket when a challenge has been scheduled
+	This message is sent to a 'challenger' through websocket when a challenge has been scheduled
 
-	// ignore the status code given here.
+	// ignore the status code 202 given here.
 	**/
 
 	@response({ status: 202 })
@@ -529,7 +659,7 @@ interface ChallengeInfoForProver
 		challenge_id			: String,
 		challenge_start_time		: DateTime,
 		challenge_timeout		: DateTime,
-		challengers			: Challenger [], 
+		challengers			: Challenger [],
 		max_packets_per_challenger	: Integer,
 		total_num_packets_for_challenge : Integer
 	},
@@ -541,7 +671,7 @@ interface ChallengeInfoForChallenger
 	message_type	: "challenge_for_challenger",
 	message		: {
 		challenge_id			: String,
-		prover				: Prover, 
+		prover				: Prover,
 		challenge_start_time		: DateTime,
 		challenge_timeout		: DateTime,
 		num_packets			: Integer,

@@ -10,7 +10,7 @@
         "tags": [
           "Auth"
         ],
-        "description": "-----\n\n\tThis API is to be called before logging in.\n\n\tIt will return a 'message' that has to be signed and sent to /login API.\n\n\tThis will also create a cookie; hence must be called in a session.",
+        "description": "-----\n\n\tThis API is to be called before logging in.\n\n\tIt will return a 'message' that has to be signed and sent to '/login' API.\n\n\tThis will also create a cookie; hence the '/login' API must be called in a session.",
         "operationId": "ApiPreLogin",
         "parameters": [],
         "requestBody": {
@@ -70,7 +70,7 @@
         "tags": [
           "Auth"
         ],
-        "description": "-----\n\n\tThis API logs in the user. \n\n\tIt should send back the 'message' that was sent during /pre-login API; \n\n\tand must sign the 'message' using private key\n\n\tand send it in the 'signature' field.",
+        "description": "-----\n\n\tThis API logs in the user.\n\n\tIt should send back the 'message' that was sent during the '/pre-login' API;\n\n\tand must sign the 'message' using private key\n\n\tand send it in the 'signature' field.",
         "operationId": "ApiLogin",
         "parameters": [
           {
@@ -277,7 +277,7 @@
         "tags": [
           "Challenge"
         ],
-        "description": "-----\n\n\tRequest to create a new challenge.\t\n\n\tBefore calling this api 'startChallenge()' smart contract must be called.\n\n\tAnd the 'transaction' after calling the startChallenge must be provided.",
+        "description": "-----\n\n\tRequest to create a new challenge.\n\n\tBefore calling this api 'startChallenge()' smart contract must be called.\n\n\tAnd the 'transaction' after calling the startChallenge must be provided.",
         "operationId": "ApiChallengeRequest",
         "parameters": [
           {
@@ -477,13 +477,19 @@
         "type": "object",
         "properties": {
           "publicKey": {
-            "type": "string"
+            "type": "string",
+            "description": "-----\n\tThe key used for login"
           },
           "walletPublicKey": {
-            "type": "string"
+            "type": "string",
+            "description": "-----\n\tThe wallet where all the rewards go.\n\n\tif 'walletPublicKey' is NOT provided, then:\n\t\twalletPublicKey = publicKey"
           },
           "keyType": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "solana"
+            ],
+            "description": "-----\n \tThe key-type of publicKey.\n\n\tAs of now these are supported keyTypes:\n\t\t1. solana"
           },
           "role": {
             "type": "string",
@@ -491,25 +497,27 @@
               "prover",
               "challenger",
               "payer"
-            ]
+            ],
+            "description": "-----\n \tThe role the user intends to play after login:\n\n\t\t1. prover     - user who wants to prove what it offers to the network.\n\n\t\t\t\t\tExample: 'bandwidth', 'latency', 'diskspace', 'cpu' etc.\n\n\t\t2. challenger - user who wants to challenge a 'prover' and earn rewards.\n\n\t\t3. payer      - an abstract entity/user who pays and requests for a challenge.\n\n                                a payer could be a 'prover' itself or the 'blockchain'."
           },
           "projectName": {
-            "type": "string"
+            "type": "string",
+            "description": "-----\n \tIf the user is also part of another blockchain project/app,\n\n\tthen the project-name/app-name can be provided here.\n\n\t\te.g. \"filecoin\", \"filecoin-station\", \"oort\", \"helium\", etc."
           },
           "projectPublicKey": {
-            "type": "string"
+            "type": "string",
+            "description": "-----\n \tpublicKey of the user associated with the 'projectName' blockchain project/app."
           },
           "bandwidth_claimed": {
             "type": "number",
-            "format": "float"
+            "format": "float",
+            "description": "-----\n \tThe amount of bandwidth in Mbps the user has OR wants to claim."
           }
         },
         "required": [
           "publicKey",
           "keyType",
           "role",
-          "projectName",
-          "projectPublicKey",
           "bandwidth_claimed"
         ]
       },
@@ -521,7 +529,7 @@
             "properties": {
               "message": {
                 "type": "string",
-                "description": "-----\n\tto be signed and sent in '/login' API"
+                "description": "-----\n\tA string to be signed using user's 'privateKey' to create a 'signature'.\n\n\tThis 'signature' should be later sent in the '/login' API to login."
               }
             },
             "required": [
@@ -546,7 +554,7 @@
             "required": [
               "message"
             ],
-            "description": "-----\n\ton failure the message contains the reason for failure"
+            "description": "-----\n\tOn failure, the 'error.message' contains the reason for the failure."
           }
         },
         "required": [
@@ -558,11 +566,11 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "-----\n\tthe message received in /pre-login API"
+            "description": "-----\n\tThe 'message' received in the '/pre-login' API."
           },
           "signature": {
             "type": "string",
-            "description": "-----\n\tthe signature afer signing the message with private key"
+            "description": "-----\n\tThe signature afer signing the 'message' with the 'privateKey'."
           }
         },
         "required": [
@@ -583,7 +591,7 @@
             "required": [
               "success"
             ],
-            "description": "-----\n\tsuccessful response has some result"
+            "description": "-----\n\tSuccessful response always has a valid 'result'."
           }
         },
         "required": [
@@ -615,11 +623,69 @@
         "type": "object",
         "properties": {
           "prover": {
-            "type": "string"
+            "type": "string",
+            "description": "-----\n \tThe id of the prover."
           }
         },
         "required": [
           "prover"
+        ]
+      },
+      "GeoIP": {
+        "type": "object",
+        "properties": {
+          "range": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "country": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "eu": {
+            "type": "string",
+            "enum": [
+              "0",
+              "1"
+            ]
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "ll": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          "metro": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "area": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "required": [
+          "range",
+          "country",
+          "region",
+          "eu",
+          "timezone",
+          "city",
+          "ll",
+          "metro",
+          "area"
         ]
       },
       "Result": {
@@ -674,24 +740,28 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "-----\n\tThe unique 'id' of the prover."
           },
           "geoip": {
-            "type": "string"
+            "$ref": "#/components/schemas/GeoIP"
           },
           "last_alive": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "-----\n\tThe latest time when the API server received a handshake from the prover."
           },
           "bandwidth_claimed": {
             "type": "number",
-            "format": "float"
+            "format": "float",
+            "description": "-----\n \tThe amount of bandwidth in Mbps the user has OR wants to claim."
           },
           "results": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ChallengeResult"
-            }
+            },
+            "description": "-----\n \tThe history of challenge results the proved has participated in."
           }
         },
         "required": [
@@ -760,7 +830,13 @@
                 "type": "string"
               },
               "challenge_status": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "SUBMITTED_TO_CHALLENGE_COORDINATOR",
+                  "ACCEPTED_BY_CHALLENGE_COORDINATOR",
+                  "ERROR_NOT_ENOUGH_CHALLENGERS",
+                  "ENDED_SUCCESSFULLY"
+                ]
               }
             },
             "required": [
@@ -793,20 +869,26 @@
               "challenge_id": {
                 "type": "string"
               },
-              "challenge_status": {
-                "type": "string"
-              },
               "start_challenge_transaction": {
                 "type": "string"
               },
               "end_challenge_transaction": {
                 "type": "string"
+              },
+              "challenge_status": {
+                "type": "string",
+                "enum": [
+                  "SUBMITTED_TO_CHALLENGE_COORDINATOR",
+                  "ACCEPTED_BY_CHALLENGE_COORDINATOR",
+                  "ERROR_NOT_ENOUGH_CHALLENGERS",
+                  "ENDED_SUCCESSFULLY"
+                ]
               }
             },
             "required": [
               "challenge_id",
-              "challenge_status",
-              "start_challenge_transaction"
+              "start_challenge_transaction",
+              "challenge_status"
             ]
           }
         },

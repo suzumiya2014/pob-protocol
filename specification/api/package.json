@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@airtasker/spot": "^1.9.0"
+    "@airtasker/spot": "^1.9.0",
+    "swagger-codegen": "^0.1.1"
   }
 }
