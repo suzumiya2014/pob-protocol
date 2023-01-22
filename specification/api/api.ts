@@ -8,7 +8,7 @@ import {
 	String,
 	Integer,
 	Float,
-	DateTime
+	DateTime,
 }
 	from "@airtasker/spot";
 
@@ -17,6 +17,7 @@ import {
 	version	: "1.0",
 })
 class Api {
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,7 +61,7 @@ interface FailureResponse {
 @endpoint({
 	method	: "POST",
 	path	: "/api/pre-login",
-	tags	: ["Auth"]
+	tags	: ["Auth"],
 })
 class ApiPreLogin
 {
@@ -396,7 +397,7 @@ interface GeoIP {
 interface ProverRequest {
 	/**
 	-----
- 	The id of the prover.
+ 	The 'id' of the prover.
 	**/
 	prover : String;
 }
@@ -425,7 +426,7 @@ interface Result {
 	/**
 	-----
 
-	Get information about all the provers.
+	Get all provers info.
 	**/
 
 @endpoint({
@@ -458,9 +459,10 @@ class ApiProvers
 
 interface ProversResponse {
 	result : {
-		provers : String[];
+		provers : ProverDetails[];
 	}
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -471,11 +473,13 @@ interface ChallengeRequest {
 
 interface ChallengeResponse {
 	result : {
-		 challenge_id     : String;
-		 challenge_status : "SUBMITTED_TO_CHALLENGE_COORDINATOR" |
-                                    "ACCEPTED_BY_CHALLENGE_COORDINATOR"  |
-                                    "ERROR_NOT_ENOUGH_CHALLENGERS"       |
-                                    "ENDED_SUCCESSFULLY";
+		
+		challenge_id     : String;
+		challenge_status :
+				"SUBMITTED_TO_CHALLENGE_COORDINATOR"	|
+				"ACCEPTED_BY_CHALLENGE_COORDINATOR"	|
+				"ERROR_NOT_ENOUGH_CHALLENGERS"		|
+				"ENDED_SUCCESSFULLY";
 	}
 }
 
@@ -580,10 +584,11 @@ interface ChallengeStatusResponse {
 		 challenge_id			: String;
 		 start_challenge_transaction	: String;
 		 end_challenge_transaction?	: String;
-                 challenge_status		: "SUBMITTED_TO_CHALLENGE_COORDINATOR"		|
-							"ACCEPTED_BY_CHALLENGE_COORDINATOR"	|
-							"ERROR_NOT_ENOUGH_CHALLENGERS"		|
-							"ENDED_SUCCESSFULLY";
+                 challenge_status		:
+				"SUBMITTED_TO_CHALLENGE_COORDINATOR"	|
+				"ACCEPTED_BY_CHALLENGE_COORDINATOR"	|
+				"ERROR_NOT_ENOUGH_CHALLENGERS"		|
+				"ENDED_SUCCESSFULLY";
 
 	}
 }
@@ -647,7 +652,7 @@ class ApiHeartbeat
 
 	has been scheduled
 
-	// ignore the status code 201 given here.
+	// ignore the status code '201' given here.
 	**/
 
 	@response({ status: 201 })
@@ -662,7 +667,7 @@ class ApiHeartbeat
 
 	has been scheduled
 
-	// ignore the status code 202 given here.
+	// ignore the status code '202' given here.
 	**/
 
 	@response({ status: 202 })
@@ -683,7 +688,7 @@ interface ChallengeInfoForProver
 		max_packets_per_challenger	: Integer,
 		total_num_packets_for_challenge : Integer
 	},
-	signature			: String
+	signature				: String
 }
 
 interface ChallengeInfoForChallenger
@@ -698,7 +703,7 @@ interface ChallengeInfoForChallenger
 		rate_of_packets_mbps		: Float,
 		total_num_packets_for_challenge : Integer,
 	},
-	signature			: String
+	signature				: String
 }
 
 interface Prover {

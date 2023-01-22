@@ -235,7 +235,7 @@
         "tags": [
           "Prover Information"
         ],
-        "description": "-----\n\n\tGet information about all the provers.",
+        "description": "-----\n\n\tGet all provers info.",
         "operationId": "ApiProvers",
         "parameters": [
           {
@@ -448,7 +448,7 @@
             }
           },
           "201": {
-            "description": "-----\n\n\tThis message is sent to a 'prover' through websocket when a challenge\n\n\thas been scheduled\n\n\t// ignore the status code 201 given here.",
+            "description": "-----\n\n\tThis message is sent to a 'prover' through websocket when a challenge\n\n\thas been scheduled\n\n\t// ignore the status code '201' given here.",
             "content": {
               "application/json": {
                 "schema": {
@@ -458,7 +458,7 @@
             }
           },
           "202": {
-            "description": "-----\n\n\tThis message is sent to a 'challenger' through websocket when a challenge\n\n\thas been scheduled\n\n\t// ignore the status code 202 given here.",
+            "description": "-----\n\n\tThis message is sent to a 'challenger' through websocket when a challenge\n\n\thas been scheduled\n\n\t// ignore the status code '202' given here.",
             "content": {
               "application/json": {
                 "schema": {
@@ -634,7 +634,7 @@
         "properties": {
           "prover": {
             "type": "string",
-            "description": "-----\n \tThe id of the prover."
+            "description": "-----\n \tThe 'id' of the prover."
           }
         },
         "required": [
@@ -802,7 +802,7 @@
               "provers": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ProverDetails"
                 }
               }
             },
