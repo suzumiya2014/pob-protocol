@@ -70,7 +70,7 @@
         "tags": [
           "Auth"
         ],
-        "description": "-----\n\n\tThis API logs in the user.\n\n\tIt should send back the 'message' that was sent during the '/pre-login' API;\n\n\tand must sign the 'message' using private key\n\n\tand send it in the 'signature' field.",
+        "description": "-----\n\n\tThis API logs in the user.\n\n\tThe user should send the 'message' that was received during the '/pre-login' API;\n\n\tand must sign the 'message' using privateKey.\n\n\tAnd send it in the 'signature' field.",
         "operationId": "ApiLogin",
         "parameters": [
           {
@@ -406,7 +406,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\n\tthis cookie should come from the result of /login API",
+            "description": "-----\n\n\tThis cookie should come from the result of '/login' API",
             "required": true,
             "schema": {
               "type": "string"
@@ -415,7 +415,7 @@
         ],
         "responses": {
           "101": {
-            "description": "-----\n\n\tThis opens up a websocket connection.\n\tThis response is the successful response.",
+            "description": "-----\n\n\tThis opens up a websocket connection.\n\n\tThis response is the successful response.",
             "headers": {
               "Upgrade": {
                 "required": true,
@@ -438,7 +438,7 @@
             }
           },
           "201": {
-            "description": "-----\n\n\tthis message is sent to a 'prover' through websocket when a challenge has been scheduled\n\n\t// ignore the status code given here.",
+            "description": "-----\n\n\tThis message is sent to a 'prover' through websocket when a challenge has been scheduled\n\n\t// ignore the status code 201 given here.",
             "content": {
               "application/json": {
                 "schema": {
@@ -448,7 +448,7 @@
             }
           },
           "202": {
-            "description": "-----\n\n\tthis message is sent to a 'challenger' through websocket when a challenge has been scheduled\n\n\t// ignore the status code given here.",
+            "description": "-----\n\n\tThis message is sent to a 'challenger' through websocket when a challenge has been scheduled\n\n\t// ignore the status code 202 given here.",
             "content": {
               "application/json": {
                 "schema": {
@@ -489,7 +489,7 @@
             "enum": [
               "solana"
             ],
-            "description": "-----\n \tThe key-type of publicKey.\n\n\tAs of now these are supported keyTypes:\n\t\t1. solana"
+            "description": "-----\n\tThe key-type of publicKey.\n\n\tAs of now these are supported keyTypes:\n\t\t1. solana"
           },
           "role": {
             "type": "string",
@@ -498,20 +498,20 @@
               "challenger",
               "payer"
             ],
-            "description": "-----\n \tThe role the user intends to play after login:\n\n\t\t1. prover     - user who wants to prove what it offers to the network.\n\n\t\t\t\t\tExample: 'bandwidth', 'latency', 'diskspace', 'cpu' etc.\n\n\t\t2. challenger - user who wants to challenge a 'prover' and earn rewards.\n\n\t\t3. payer      - an abstract entity/user who pays and requests for a challenge.\n\n                                a payer could be a 'prover' itself or the 'blockchain'."
+            "description": "-----\n \tThe role the user intends to play after login:\n\n\t\t1. prover\n\t\t\tUser who wants to prove what it offers to the network.\n\n\t\t\tExample: 'bandwidth', 'latency', 'disk', 'cpu' etc.\n\n\t\t2. challenger\n\t\t\tUser who wants to challenge a 'prover'\n\t\t\tand earn rewards.\n\n\t\t3. payer\n\t\t\tAn abstract entity/user who pays\n\t\t\tand requests for a challenge.\n\n\t\t\tA payer could be:\n\t\t\tthe 'prover' itself, other users, or the blockchain."
           },
           "projectName": {
             "type": "string",
-            "description": "-----\n \tIf the user is also part of another blockchain project/app,\n\n\tthen the project-name/app-name can be provided here.\n\n\t\te.g. \"filecoin\", \"filecoin-station\", \"oort\", \"helium\", etc."
+            "description": "-----\n\tIf the user is also part of another blockchain project/app,\n\n\tthen the project-name/app-name can be provided here.\n\n\t\te.g. \"filecoin\", \"filecoin-station\", \"oort\", etc."
           },
           "projectPublicKey": {
             "type": "string",
-            "description": "-----\n \tpublicKey of the user associated with the 'projectName' blockchain project/app."
+            "description": "-----\n\tpublicKey of the user associated with the\n\n\t'projectName' blockchain project/app."
           },
           "bandwidth_claimed": {
             "type": "number",
             "format": "float",
-            "description": "-----\n \tThe amount of bandwidth in Mbps the user has OR wants to claim."
+            "description": "-----\n\tThe amount of bandwidth in Mbps the user has\n\t\tOR\n\twants to claim."
           }
         },
         "required": [

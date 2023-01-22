@@ -184,11 +184,11 @@ interface PreloginResponse {
 
 	This API logs in the user.
 
-	It should send back the 'message' that was sent during the '/pre-login' API;
+	The user should send the 'message' that was received during the '/pre-login' API;
 
-	and must sign the 'message' using private key
+	and must sign the 'message' using privateKey.
 
-	and send it in the 'signature' field.
+	And send it in the 'signature' field.
 **/
 
 
