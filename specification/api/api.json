@@ -28,6 +28,7 @@
             "description": "200 response",
             "headers": {
               "Set-Cookie": {
+                "description": "initial cookie that is to be sent to '/login' API",
                 "required": true,
                 "schema": {
                   "type": "string"
@@ -95,6 +96,15 @@
         "responses": {
           "200": {
             "description": "200 response",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Cookie after successful login.\n\t\t\t\tIt must be presented for next API calls.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {

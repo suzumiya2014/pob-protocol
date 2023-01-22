@@ -71,6 +71,9 @@ class ApiPreLogin
 	successfulResponse(
 		@body body: PreloginResponse,
 		@headers headers : {
+
+			/** initial cookie that is to be sent to '/login' API **/
+
 			"Set-Cookie" : String
 		}
 	) {}
@@ -209,7 +212,18 @@ class ApiLogin
 
 	@response({ status: 200 })
 	successfulResponse(
-		@body body: SuccessResponse
+		@body
+			body: SuccessResponse,
+		@headers
+			headers : {
+
+			/**
+				Cookie after successful login.
+				It must be presented for next API calls.
+			**/
+
+			"Set-Cookie" : String
+		}
 	) {}
 
 	@response({ status: 400 })
