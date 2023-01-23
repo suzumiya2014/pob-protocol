@@ -1031,18 +1031,12 @@
             ]
           },
           "message": {
-            "type": "object",
-            "properties": {
-              "result": {
-                "$ref": "#/components/schemas/Result"
-              }
-            },
-            "required": [
-              "result"
-            ]
+            "type": "string",
+            "description": "-----\n\tThe result of a challenge - a JSON converted to a string.\n\n\te.g. in JavaScript:\n\n\t\tmessage = JSON.stringify ({\n\t\t\tchallenge_id,\n\t\t\tresult,\n\t\t});\n\t\n\tThe result contains fields that have been measured\n\n\tby the challenger:\n\n\t\tlike \"bandwidth\" and \"latency\"."
           },
           "signature": {
-            "type": "string"
+            "type": "string",
+            "description": "-----\n\tThe 'message' string signed using privateKey."
           }
         },
         "required": [

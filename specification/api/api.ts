@@ -673,16 +673,33 @@ class ApiChallengeResult
 
 interface ChallengeResultRequest {  // XXX to be fixed
 	message_type	: "challenge_result";
-	message		: {
-		/**
-		-----
-		The result of a challenge.
-		**/
 
-		result	: Result; 
-	};
+	/**
+	-----
+	The result of a challenge - a JSON converted to a string.
+
+	e.g. in JavaScript:
+
+		message = JSON.stringify ({
+			challenge_id,
+			result,
+		});
+	
+	The result contains fields that have been measured
+
+	by the challenger:
+
+		like "bandwidth" and "latency".
+	**/
+
+	message		: String;
+
+	/**
+	-----
+	The 'message' string signed using privateKey.
+	**/
+
 	signature	: String;
-
 }
 
 interface ChallengeStatusRequest {
