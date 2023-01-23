@@ -57,6 +57,20 @@ interface FailureResponse {
 	}
 }
 
+interface PreLoginCookieHeader {
+		
+	/** The cookie that was received after calling '/pre-login' API **/
+
+	"Cookie" : String
+}
+
+interface LoginCookieHeader {
+		
+	/** The cookie that was received after calling '/login' API **/
+
+	"Cookie" : String
+} 
+
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -220,10 +234,8 @@ class ApiLogin
 {
 	@request
 	request(
-		@body body: LoginRequest,
-		@headers headers : {
-			"Cookie" : String
-		}
+		@body		body	: LoginRequest,
+		@headers	headers	: PreLoginCookieHeader 
 	) {}
 
 	@response({ status: 200 })
@@ -263,9 +275,7 @@ class ApiUserInfo
 {
 	@request
 	request(
-		@headers headers : {
-			"Cookie" : String
-		}
+		@headers headers : LoginCookieHeader
 	) {}
 
 	@response({ status: 200 })
@@ -341,10 +351,8 @@ class ApiProver
 {
 	@request
 	request(
-		@body body: ProverRequest,
-		@headers headers : {
-			"Cookie" : String
-		}
+		@body		body	: ProverRequest,
+		@headers	headers : LoginCookieHeader
 	) {}
 
 	@response({ status: 200 })
@@ -451,17 +459,12 @@ class ApiProvers
 {
 	@request
 	request(
-		@headers headers : {
-			"Cookie" : String
-		}
+		@headers headers : LoginCookieHeader
 	) {}
 
 	@response({ status: 200 })
 	successfulResponse(
 		@body body : ProversResponse[],
-		@headers headers : {
-			"Cookie" : String
-		}
 	) {}
 
 	@response({ status: 401 })
@@ -518,9 +521,7 @@ class ApiChallengeRequest
 	request(
 		@body body: ChallengeRequest,
 
-		@headers headers : {
-			"Cookie" : String
-		}
+		@headers headers : LoginCookieHeader
 	) {}
 
 	@response({ status: 200 })
@@ -544,10 +545,7 @@ class ApiChallengeStatus
 	@request
 	request(
 		@body body: ChallengeStatusRequest,
-
-		@headers headers : {
-			"Cookie" : String
-		}
+		@headers headers : LoginCookieHeader
 	) {}
 
 	@response({ status: 200 })
@@ -571,10 +569,7 @@ class ApiChallengeResult
 	@request
 	request(
 		@body body: ChallengeResultRequest,
-
-		@headers headers : {
-			"Cookie" : String
-		}
+		@headers headers : LoginCookieHeader
 	) {}
 
 	@response({ status: 200 })
@@ -625,16 +620,7 @@ class ApiHeartbeat
 {
 	@request
 	request(
-		@headers headers : {
-
-/**
-	-----
-
-	This cookie should come from the result of '/login' API
-**/
-
-			"Cookie" : String
-		}
+		@headers headers : LoginCookieHeader
 	) {}
 
 	/**
