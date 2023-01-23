@@ -139,7 +139,7 @@ class ApiPreLogin
 		@body body: FailureResponse
 	) {}
 
-	@response({ status: 401 })
+	@response({ status: 400 })
 	unauthorizedResponse(
 		@body body : FailureResponse
 	) {}
@@ -280,7 +280,7 @@ class ApiLogin
 		}
 	) {}
 
-	@response({ status: 400 })
+	@response({ status: 401 })
 	badRequestResponse(
 		@body body: FailureResponse,
 	) {}
@@ -390,11 +390,6 @@ class ApiProver
 	badRequestResponse(
 		@body body: FailureResponse
 	) {}
-
-	@response({ status: 401 })
-	unauthorizedResponse(
-		@body body : FailureResponse
-	) {}
 }
 
 interface ProverDetails {
@@ -496,6 +491,11 @@ class ApiProvers
 	@response({ status: 200 })
 	successfulResponse(
 		@body body : ProversResponse[],
+	) {}
+
+	@response({ status: 400 })
+	badRequestResponse(
+		@body body : FailureResponse
 	) {}
 
 	@response({ status: 401 })

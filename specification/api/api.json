@@ -43,8 +43,8 @@
               }
             }
           },
-          "401": {
-            "description": "401 response",
+          "400": {
+            "description": "400 response",
             "content": {
               "application/json": {
                 "schema": {
@@ -105,7 +105,7 @@
             }
           },
           "400": {
-            "description": "400 response",
+            "description": "401 response",
             "content": {
               "application/json": {
                 "schema": {
@@ -219,16 +219,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "401 response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FailureResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -261,6 +251,16 @@
                   "items": {
                     "$ref": "#/components/schemas/ProversResponse"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
                 }
               }
             }
