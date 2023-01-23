@@ -135,11 +135,6 @@ class ApiPreLogin
 	badRequestResponse(
 		@body body: FailureResponse
 	) {}
-
-	@response({ status: 401 })
-	unauthorizedResponse(
-		@body body: FailureResponse
-	) {}
 }
 
 interface PreloginRequest {

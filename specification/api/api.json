@@ -52,16 +52,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "401 response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FailureResponse"
-                }
-              }
-            }
           }
         }
       }
