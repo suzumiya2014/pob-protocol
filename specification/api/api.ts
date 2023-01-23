@@ -728,12 +728,18 @@ interface ChallengeStatusResponse {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+	/**
+	-----
+	Claim that you have certain bandwidth in Mbps.
+	**/
+
+
 @endpoint({
 	method	: "POST",
 	path	: "/claim-bandwidth",
 	tags	: ["Bandwidth"]
 })
-class ClaimBandwidth 
+class ApiClaimBandwidth 
 {
 	@request
 	request(
@@ -751,11 +757,20 @@ class ClaimBandwidth
 		@headers	headers : LoginCookieHeader
 	) {}
 
-	@response({ status: 202 })
-	wsResponseForChallenger(
-		@body body : ChallengeInfoForChallenger
+	@response({ status: 200 })
+	successfulResponse(
+		@body body : SuccessResponse 
 	) {}
 
+	@response({ status: 400 })
+	badRequestResponse(
+		@body body : FailureResponse
+	) {}
+
+	@response({ status: 401 })
+	unauthorizedResponse(
+		@body body : FailureResponse
+	) {}
 };
 
 
