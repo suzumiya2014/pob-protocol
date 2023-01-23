@@ -43,8 +43,8 @@
               }
             }
           },
-          "400": {
-            "description": "400 response",
+          "401": {
+            "description": "401 response",
             "content": {
               "application/json": {
                 "schema": {
@@ -67,7 +67,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "The cookie that was received after calling '/pre-login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/pre-login' API",
             "required": true,
             "schema": {
               "type": "string"
@@ -128,7 +128,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "The cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API",
             "required": true,
             "schema": {
               "type": "string"
@@ -182,7 +182,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "The cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API",
             "required": true,
             "schema": {
               "type": "string"
@@ -206,6 +206,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProverResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
                 }
               }
             }
@@ -234,7 +244,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "The cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API",
             "required": true,
             "schema": {
               "type": "string"
@@ -273,13 +283,13 @@
         "tags": [
           "Challenge"
         ],
-        "description": "-----\n\n\tRequest to create a new challenge.\n\n\tBefore calling this api 'startChallenge()' smart contract must be called.\n\n\tAnd the 'transaction' after calling the startChallenge must be provided.",
+        "description": "-----\n\n\tRequest to create a new challenge.\n\n\tBefore calling this api 'startChallenge()' smart contract must be called.\n\n\tAnd the 'transaction' after calling the 'startChallenge' must be provided.",
         "operationId": "ApiChallengeRequest",
         "parameters": [
           {
             "name": "Cookie",
             "in": "header",
-            "description": "The cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API",
             "required": true,
             "schema": {
               "type": "string"
@@ -306,6 +316,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "400 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -321,7 +351,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "The cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API",
             "required": true,
             "schema": {
               "type": "string"
@@ -348,6 +378,26 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "400 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -363,7 +413,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "The cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API",
             "required": true,
             "schema": {
               "type": "string"
@@ -386,7 +436,27 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChallengeResponse"
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
                 }
               }
             }
@@ -405,7 +475,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "The cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API",
             "required": true,
             "schema": {
               "type": "string"
@@ -808,10 +878,12 @@
         "type": "object",
         "properties": {
           "prover": {
-            "type": "string"
+            "type": "string",
+            "description": "-----\n \tThe 'id' of the prover."
           },
           "transaction": {
-            "type": "string"
+            "type": "string",
+            "description": "-----\n \tThe transaction that was generated after calling the\n\t'startChallenge' smart contract."
           }
         },
         "required": [
@@ -898,16 +970,31 @@
       "ChallengeResultRequest": {
         "type": "object",
         "properties": {
-          "prover": {
-            "type": "string"
+          "message_type": {
+            "type": "string",
+            "enum": [
+              "challenge_result"
+            ]
           },
-          "transaction": {
+          "message": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "$ref": "#/components/schemas/Result"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          },
+          "signature": {
             "type": "string"
           }
         },
         "required": [
-          "prover",
-          "transaction"
+          "message_type",
+          "message",
+          "signature"
         ]
       },
       "Challenger": {

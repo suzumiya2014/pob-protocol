@@ -81,14 +81,18 @@ interface FailureResponse {
 
 interface PreLoginCookieHeader {
 		
-	/** The cookie that was received after calling '/pre-login' API **/
+	/** -----
+	The cookie that was received after calling '/pre-login' API
+	**/
 
 	"Cookie" : String
 }
 
 interface LoginCookieHeader {
 		
-	/** The cookie that was received after calling '/login' API **/
+	/** -----
+	The cookie that was received after calling '/login' API
+	**/
 
 	"Cookie" : String
 } 
@@ -131,9 +135,13 @@ class ApiPreLogin
 		}
 	) {}
 
-	@response({ status: 400 })
 	badRequestResponse(
 		@body body: FailureResponse
+	) {}
+
+	@response({ status: 401 })
+	unauthorizedResponse(
+		@body body : FailureResponse
 	) {}
 }
 
@@ -378,6 +386,11 @@ class ApiProver
 		@body body : ProverResponse,
 	) {}
 
+	@response({ status: 400 })
+	badRequestResponse(
+		@body body: FailureResponse
+	) {}
+
 	@response({ status: 401 })
 	unauthorizedResponse(
 		@body body : FailureResponse
@@ -501,7 +514,19 @@ interface ProversResponse {
 
 
 interface ChallengeRequest {
+
+	/**
+	-----
+ 	The 'id' of the prover.
+	**/
 	prover		: String;
+
+	/**
+	-----
+ 	The transaction that was generated after calling the
+	'startChallenge' smart contract. 
+	**/
+
 	transaction	: String;
 }
 
@@ -525,7 +550,7 @@ interface ChallengeResponse {
 
 	Before calling this api 'startChallenge()' smart contract must be called.
 
-	And the 'transaction' after calling the startChallenge must be provided.
+	And the 'transaction' after calling the 'startChallenge' must be provided.
 	**/
 
 @endpoint({
@@ -545,6 +570,16 @@ class ApiChallengeRequest
 	@response({ status: 200 })
 	successfulResponse(
 		@body body: ChallengeResponse
+	) {}
+
+	@response({ status: 400 })
+	badRequestResponse(
+		@body body: FailureResponse
+	) {}
+
+	@response({ status: 401 })
+	unauthorizedResponse(
+		@body body : FailureResponse
 	) {}
 }
 
@@ -570,6 +605,16 @@ class ApiChallengeStatus
 	successfulResponse(
 		@body body: ChallengeStatusResponse
 	) {}
+
+	@response({ status: 400 })
+	badRequestResponse(
+		@body body: FailureResponse
+	) {}
+
+	@response({ status: 401 })
+	unauthorizedResponse(
+		@body body : FailureResponse
+	) {}
 }
 
 	/**
@@ -592,13 +637,27 @@ class ApiChallengeResult
 
 	@response({ status: 200 })
 	successfulResponse(
-		@body body: ChallengeResponse
+		@body body: SuccessResponse 
+	) {}
+
+	@response({ status: 400 })
+	badRequestResponse(
+		@body body: FailureResponse
+	) {}
+
+	@response({ status: 401 })
+	unauthorizedResponse(
+		@body body : FailureResponse
 	) {}
 }
 
-interface ChallengeResultRequest {
-	prover		: String;
-	transaction	: String;
+interface ChallengeResultRequest {  // XXX to be fixed
+	message_type	: "challenge_result";
+	message		: {
+		result	: Result; 
+	};
+	signature	: String;
+
 }
 
 interface ChallengeStatusRequest {
