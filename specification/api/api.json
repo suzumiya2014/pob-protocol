@@ -8,7 +8,7 @@
     "/pre-login": {
       "post": {
         "tags": [
-          "Auth"
+          "Authentication"
         ],
         "description": "-----\n\n\tThis API is to be called before logging in.\n\n\tIt will return a 'message' that has to be signed and sent to '/login' API.\n\n\tThis will also create a cookie;\n\n\thence the '/login' API must be called in a session.",
         "operationId": "ApiPreLogin",
@@ -69,7 +69,7 @@
     "/login": {
       "post": {
         "tags": [
-          "Auth"
+          "Authentication"
         ],
         "description": "-----\n\n\tThis API logs in the user.\n\n\tThe user should send the 'message' that was received during the '/pre-login';\n\n\tand must sign the 'message' using privateKey.\n\n\tAnd send it in the 'signature' field.",
         "operationId": "ApiLogin",
@@ -130,7 +130,7 @@
     "/user-info": {
       "post": {
         "tags": [
-          "Auth"
+          "Authentication"
         ],
         "description": "-----\n\n\tGet logged in user information.",
         "operationId": "ApiUserInfo",
@@ -162,7 +162,7 @@
     "/logout": {
       "post": {
         "tags": [
-          "Auth"
+          "Authentication"
         ],
         "description": "-----\n\n\tLogs out the user.",
         "operationId": "ApiLogout",

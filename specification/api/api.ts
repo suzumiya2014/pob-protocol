@@ -110,7 +110,7 @@ interface LoginCookieHeader {
 @endpoint({
 	method	: "POST",
 	path	: "/pre-login",
-	tags	: ["Auth"],
+	tags	: ["Authentication"],
 })
 class ApiPreLogin
 {
@@ -251,7 +251,7 @@ interface PreloginResponse {
 @endpoint({
 	method	: "POST",
 	path	: "/login",
-	tags	: ["Auth"]
+	tags	: ["Authentication"]
 })
 class ApiLogin
 {
@@ -292,7 +292,7 @@ class ApiLogin
 @endpoint({
 	method	: "POST",
 	path	: "/user-info",
-	tags	: ["Auth"]
+	tags	: ["Authentication"]
 })
 class ApiUserInfo
 {
@@ -327,7 +327,7 @@ interface UserInfoResponse {
 @endpoint({
 	method	: "POST",
 	path	: "/logout",
-	tags	: ["Auth"]
+	tags	: ["Authentication"]
 })
 class ApiLogout
 {
