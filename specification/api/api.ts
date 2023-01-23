@@ -17,6 +17,7 @@ import {oa3server} from "@airtasker/spot/build/lib/src/syntax/oa3server";
 import {oa3serverVariables} from "@airtasker/spot/build/lib/src/syntax/oa3serverVariables";
 
 import {SecurityDefinitionsObject} from "@airtasker/spot/build/lib/src/generators/openapi2/openapi2-specification";
+import {CookieParameterObject} from "@airtasker/spot/build/lib/src/generators/openapi3/openapi3-specification";
 
 @api({
 	name	: "Proof of Backhaul",
@@ -34,11 +35,18 @@ class Api {
 		}
 	) {};
 
+
 	@securityHeader
 		"Cookie" : String;
 
 /*
 	Not sure how to specify exat cookie name 
+
+	@securityHeader
+		@CookieParameterObject (
+		){
+			in : "cookie"
+		};
 
 	@securityHeader
 		ApiKeySecuritySchemeObject(
@@ -135,12 +143,8 @@ class ApiPreLogin
 		}
 	) {}
 
-	badRequestResponse(
-		@body body: FailureResponse
-	) {}
-
 	@response({ status: 400 })
-	unauthorizedResponse(
+	badRequestResponse(
 		@body body : FailureResponse
 	) {}
 }
@@ -159,6 +163,9 @@ interface PreloginRequest {
 
 	if 'walletPublicKey' is NOT provided, then:
 		walletPublicKey = publicKey
+
+	As of now these are supported wallets:
+		1. solana
 	**/
 
 	walletPublicKey?	: String;
@@ -280,7 +287,7 @@ class ApiLogin
 		}
 	) {}
 
-	@response({ status: 401 })
+	@response({ status: 400 })
 	badRequestResponse(
 		@body body: FailureResponse,
 	) {}
@@ -390,6 +397,11 @@ class ApiProver
 	badRequestResponse(
 		@body body: FailureResponse
 	) {}
+
+	@response({ status: 401 })
+	unauthorizedResponse(
+		@body body : FailureResponse
+	) {}
 }
 
 interface ProverDetails {
@@ -414,8 +426,11 @@ interface ProverDetails {
 
 	/**
 	-----
- 	The amount of bandwidth in Mbps the user has OR wants to claim.
+The amount of bandwidth in Mbps the user has
+	OR
+wants to claim.
 	**/
+
 
 	bandwidth_claimed	: Float;
 
@@ -466,13 +481,23 @@ interface ChallengeResult {
 }
 
 interface Result {
+	/**
+	-----
+	Bandwidth measured by the challenger.
+	**/
+
 	bandwidth	: Float,
+
+	/**
+	-----
+	Latency measured by the challenger.
+	**/
+
 	latency		: Float
 }
 
 	/**
 	-----
-
 	Get all provers info.
 	**/
 
@@ -491,11 +516,6 @@ class ApiProvers
 	@response({ status: 200 })
 	successfulResponse(
 		@body body : ProversResponse[],
-	) {}
-
-	@response({ status: 400 })
-	badRequestResponse(
-		@body body : FailureResponse
 	) {}
 
 	@response({ status: 401 })
@@ -654,6 +674,11 @@ class ApiChallengeResult
 interface ChallengeResultRequest {  // XXX to be fixed
 	message_type	: "challenge_result";
 	message		: {
+		/**
+		-----
+		The result of a challenge.
+		**/
+
 		result	: Result; 
 	};
 	signature	: String;
@@ -661,6 +686,12 @@ interface ChallengeResultRequest {  // XXX to be fixed
 }
 
 interface ChallengeStatusRequest {
+	/**
+	-----
+ 	The transaction that was generated after calling the
+	'startChallenge' smart contract. 
+	**/
+
 	transaction : String;
 }
 
@@ -677,6 +708,39 @@ interface ChallengeStatusResponse {
 
 	}
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+@endpoint({
+	method	: "POST",
+	path	: "/claim-bandwidth",
+	tags	: ["Bandwidth"]
+})
+class ClaimBandwidth 
+{
+	@request
+	request(
+		@body body : {
+	/**
+	-----
+	The amount of bandwidth in Mbps the user has
+		OR
+	wants to claim.
+	**/
+
+
+			bandwidth_claimed : Float 
+		},
+		@headers	headers : LoginCookieHeader
+	) {}
+
+	@response({ status: 202 })
+	wsResponseForChallenger(
+		@body body : ChallengeInfoForChallenger
+	) {}
+
+};
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
