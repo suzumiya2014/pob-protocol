@@ -9,11 +9,14 @@ import {
 	Integer,
 	Float,
 	DateTime,
+	securityHeader,
 }
 	from "@airtasker/spot";
 
 import {oa3server} from "@airtasker/spot/build/lib/src/syntax/oa3server";
 import {oa3serverVariables} from "@airtasker/spot/build/lib/src/syntax/oa3serverVariables";
+
+import {SecurityDefinitionsObject} from "@airtasker/spot/build/lib/src/generators/openapi2/openapi2-specification";
 
 @api({
 	name	: "Proof of Backhaul",
@@ -22,15 +25,34 @@ import {oa3serverVariables} from "@airtasker/spot/build/lib/src/syntax/oa3server
 class Api {
 	@oa3server({ url: "https://pob.witnesschain.com/{basePath}" })
 
-productionServer(
-    @oa3serverVariables
-    variables: {
-	/**
-	* @default "api"
-	*/
-      basePath: "api" 
-    }
-  ) {}
+	productionServer(
+		@oa3serverVariables variables: {
+			/**
+			* @default "api"
+			*/
+			basePath: "api",
+		}
+	) {};
+
+	@securityHeader
+		"Cookie" : String;
+
+/*
+	Not sure how to specify exat cookie name 
+
+	@securityHeader
+		ApiKeySecuritySchemeObject(
+			"type" : "apiKey";
+		){};
+
+	@securityHeader // "Cookie" : String;
+		SecurityDefinitionsObject (
+		){
+			"type"	: "apiKey",
+			"name"	: "x",
+			"in"	: "cookie",
+		};
+*/
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,6 +121,7 @@ class ApiPreLogin
 
 	@response({ status: 200 })
 	successfulResponse(
+
 		@body body: PreloginResponse,
 		@headers headers : {
 

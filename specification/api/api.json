@@ -1066,8 +1066,20 @@
           "signature"
         ]
       }
+    },
+    "securitySchemes": {
+      "SecurityHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Cookie"
+      }
     }
   },
+  "security": [
+    {
+      "SecurityHeader": []
+    }
+  ],
   "servers": [
     {
       "url": "https://pob.witnesschain.com/{basePath}",
