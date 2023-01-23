@@ -12,12 +12,25 @@ import {
 }
 	from "@airtasker/spot";
 
+import {oa3server} from "@airtasker/spot/build/lib/src/syntax/oa3server";
+import {oa3serverVariables} from "@airtasker/spot/build/lib/src/syntax/oa3serverVariables";
+
 @api({
 	name	: "Proof of Backhaul",
 	version	: "1.0",
 })
 class Api {
+	@oa3server({ url: "https://pob.witnesschain.com/{basePath}" })
 
+productionServer(
+    @oa3serverVariables
+    variables: {
+	/**
+	* @default "api"
+	*/
+      basePath: "api" 
+    }
+  ) {}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,7 +73,7 @@ interface FailureResponse {
 
 @endpoint({
 	method	: "POST",
-	path	: "/api/pre-login",
+	path	: "/pre-login",
 	tags	: ["Auth"],
 })
 class ApiPreLogin
@@ -200,7 +213,7 @@ interface PreloginResponse {
 
 @endpoint({
 	method	: "POST",
-	path	: "/api/login",
+	path	: "/login",
 	tags	: ["Auth"]
 })
 class ApiLogin
@@ -243,7 +256,7 @@ class ApiLogin
 
 @endpoint({
 	method	: "POST",
-	path	: "/api/user-info",
+	path	: "/user-info",
 	tags	: ["Auth"]
 })
 class ApiUserInfo
@@ -280,7 +293,7 @@ interface UserInfoResponse {
 
 @endpoint({
 	method	: "POST",
-	path	: "/api/logout",
+	path	: "/logout",
 	tags	: ["Auth"]
 })
 class ApiLogout
@@ -321,7 +334,7 @@ interface LoginRequest {
 
 @endpoint({
 	method	: "POST",
-	path	: "/api/prover",
+	path	: "/prover",
 	tags	: ["Prover Information"]
 })
 class ApiProver
@@ -431,7 +444,7 @@ interface Result {
 
 @endpoint({
 	method	: "POST",
-	path	: "/api/provers",
+	path	: "/provers",
 	tags	: ["Prover Information"]
 })
 class ApiProvers
@@ -496,7 +509,7 @@ interface ChallengeResponse {
 
 @endpoint({
 	method	: "POST",
-	path	: "/api/challenge-request",
+	path	: "/challenge-request",
 	tags	: ["Challenge"]
 })
 class ApiChallengeRequest
@@ -523,7 +536,7 @@ class ApiChallengeRequest
 
 @endpoint({
 	method	: "POST",
-	path	: "/api/challenge-status",
+	path	: "/challenge-status",
 	tags	: ["Challenge"]
 })
 class ApiChallengeStatus
@@ -550,7 +563,7 @@ class ApiChallengeStatus
 
 @endpoint({
 	method	: "POST",
-	path	: "/api/challenge-result",
+	path	: "/challenge-result",
 	tags	: ["Challenge"]
 })
 class ApiChallengeResult
