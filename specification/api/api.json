@@ -674,6 +674,38 @@
           }
         }
       }
+    },
+    "/release-info": {
+      "post": {
+        "tags": [
+          "General Information"
+        ],
+        "description": "-----\n\n\tGet the latest released version information on various software",
+        "operationId": "ApiReleaseInfo",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1117,7 +1149,7 @@
           },
           "message": {
             "type": "string",
-            "description": "-----\n\tThe result of a challenge - a JSON converted to a string.\n\n\te.g. in JavaScript:\n\n\t\tmessage = JSON.stringify ({\n\t\t\tchallenge_id,\n\t\t\tresult,\n\t\t});\n\t\n\tThe result contains fields that have been measured\n\n\tby the challenger:\n\n\t\tlike \"bandwidth\" and \"latency\"."
+            "description": "-----\n\tThe result of a challenge - a JSON converted to a string.\n\n\te.g. in JavaScript:\n\n\t\tmessage = JSON.stringify ({\n\t\t\tchallenge_id,\n\t\t\tresult,\n\t\t});\n\n\tThe result contains fields that have been measured\n\n\tby the challenger:\n\n\t\tlike \"bandwidth\" and \"latency\"."
           },
           "signature": {
             "type": "string",
@@ -1332,6 +1364,30 @@
               "num_provers",
               "online_challenges",
               "num_challengers"
+            ]
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "ReleaseInfoResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "properties": {
+              "pob_prover_client": {
+                "type": "string",
+                "description": "-----\n\t'_client' is for clients\n\t'_server' is for servers"
+              },
+              "pob_challenger_client": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "pob_prover_client",
+              "pob_challenger_client"
             ]
           }
         },

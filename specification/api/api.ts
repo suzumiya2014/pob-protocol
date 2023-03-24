@@ -40,7 +40,7 @@ class Api {
 		"Cookie" : String;
 
 /*
-	Not sure how to specify exat cookie name 
+	Not sure how to specify exat cookie name
 
 	@securityHeader
 		@CookieParameterObject (
@@ -88,7 +88,7 @@ interface FailureResponse {
 }
 
 interface PreLoginCookieHeader {
-		
+
 	/** -----
 	The cookie that was received after calling '/pre-login' API
 	**/
@@ -97,13 +97,13 @@ interface PreLoginCookieHeader {
 }
 
 interface LoginCookieHeader {
-		
+
 	/** -----
 	The cookie that was received after calling '/login' API
 	**/
 
 	"Cookie" : String
-} 
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -268,7 +268,7 @@ class ApiLogin
 	@request
 	request(
 		@body		body	: LoginRequest,
-		@headers	headers	: PreLoginCookieHeader 
+		@headers	headers	: PreLoginCookieHeader
 	) {}
 
 	@response({ status: 200 })
@@ -414,7 +414,7 @@ interface ProverDetails {
 	/**
 	-----
 	The estimate of geographic information based on IP address, please refer:
-		https://www.npmjs.com/package/fast-geoip	
+		https://www.npmjs.com/package/fast-geoip
 	**/
 	geoip			: GeoIP;
 
@@ -467,7 +467,7 @@ interface ProverRequest {
 interface ProverResponse {
 	/**
 	-----
- 	The details of the prover. 
+ 	The details of the prover.
 	**/
 	result : ProverDetails
 }
@@ -544,7 +544,7 @@ interface ChallengeRequest {
 	/**
 	-----
  	The transaction that was generated after calling the
-	'startChallenge' smart contract. 
+	'startChallenge' smart contract.
 	**/
 
 	transaction	: String;
@@ -552,7 +552,7 @@ interface ChallengeRequest {
 
 interface ChallengeResponse {
 	result : {
-		
+
 		challenge_id     : String;
 		challenge_status :
 				"SUBMITTED_TO_CHALLENGE_COORDINATOR"	|
@@ -657,7 +657,7 @@ class ApiChallengeResult
 
 	@response({ status: 200 })
 	successfulResponse(
-		@body body: SuccessResponse 
+		@body body: SuccessResponse
 	) {}
 
 	@response({ status: 400 })
@@ -684,7 +684,7 @@ interface ChallengeResultRequest {  // XXX to be fixed
 			challenge_id,
 			result,
 		});
-	
+
 	The result contains fields that have been measured
 
 	by the challenger:
@@ -706,7 +706,7 @@ interface ChallengeStatusRequest {
 	/**
 	-----
  	The transaction that was generated after calling the
-	'startChallenge' smart contract. 
+	'startChallenge' smart contract.
 	**/
 
 	transaction : String;
@@ -739,7 +739,7 @@ interface ChallengeStatusResponse {
 	path	: "/claim-bandwidth",
 	tags	: ["PoB claim"]
 })
-class ApiClaimBandwidth 
+class ApiClaimBandwidth
 {
 	@request
 	request(
@@ -752,14 +752,14 @@ class ApiClaimBandwidth
 	**/
 
 
-			bandwidth_claimed : Float 
+			bandwidth_claimed : Float
 		},
 		@headers	headers : LoginCookieHeader
 	) {}
 
 	@response({ status: 200 })
 	successfulResponse(
-		@body body : SuccessResponse 
+		@body body : SuccessResponse
 	) {}
 
 	@response({ status: 400 })
@@ -891,7 +891,7 @@ interface Challenger {
 /**
 	-----
 
-	Get user's IP addresses as seen by the challenge co-ordinator 
+	Get user's IP addresses as seen by the challenge co-ordinator
 **/
 
 @endpoint({
@@ -917,7 +917,7 @@ interface IPInfoResponse {
 	/**
 	-----
 
-	will return 'null' if the specific IP version is not available 
+	will return 'null' if the specific IP version is not available
 	**/
 		IPv4 : String | null;
 		IPv6 : String | null;
@@ -927,7 +927,7 @@ interface IPInfoResponse {
 /**
 	-----
 
-	Get statistics on 'provers' and 'challengers'. 
+	Get statistics on 'provers' and 'challengers'.
 **/
 
 @endpoint({
@@ -966,5 +966,42 @@ interface StatisticsResponse {
 	**/
 		online_challenges	: Integer;
 		num_challengers		: Integer;
+	}
+}
+
+/**
+	-----
+
+	Get the latest released version information on various software
+**/
+
+@endpoint({
+	method	: "POST",
+	path	: "/release-info",
+	tags	: ["General Information"]
+})
+class ApiReleaseInfo
+{
+	@request
+	request(
+		@headers headers : LoginCookieHeader
+	) {}
+
+	@response({ status: 200 })
+	successfulResponse(
+		@body body: ReleaseInfoResponse
+	) {}
+}
+
+interface ReleaseInfoResponse {
+	result : {
+
+	/**
+	-----
+	'_client' is for clients
+	'_server' is for servers
+	**/
+		pob_prover_client	: String;
+		pob_challenger_client	: String;
 	}
 }
