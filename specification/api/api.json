@@ -278,7 +278,7 @@
         }
       }
     },
-    "/challenge-request": {
+    "/pob-challenge-request": {
       "post": {
         "tags": [
           "Challenge"
@@ -340,7 +340,7 @@
         }
       }
     },
-    "/challenge-status": {
+    "/pob-challenge-status": {
       "post": {
         "tags": [
           "Challenge"
@@ -402,7 +402,7 @@
         }
       }
     },
-    "/challenge-result": {
+    "/pob-challenge-result": {
       "post": {
         "tags": [
           "Challenge"

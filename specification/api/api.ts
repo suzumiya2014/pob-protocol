@@ -575,7 +575,7 @@ interface ChallengeResponse {
 
 @endpoint({
 	method	: "POST",
-	path	: "/challenge-request",
+	path	: "/pob-challenge-request",
 	tags	: ["Challenge"]
 })
 class ApiChallengeRequest
@@ -610,7 +610,7 @@ class ApiChallengeRequest
 
 @endpoint({
 	method	: "POST",
-	path	: "/challenge-status",
+	path	: "/pob-challenge-status",
 	tags	: ["Challenge"]
 })
 class ApiChallengeStatus
@@ -644,7 +644,7 @@ class ApiChallengeStatus
 
 @endpoint({
 	method	: "POST",
-	path	: "/challenge-result",
+	path	: "/pob-challenge-result",
 	tags	: ["Challenge"]
 })
 class ApiChallengeResult
