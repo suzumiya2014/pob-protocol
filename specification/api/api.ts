@@ -122,7 +122,7 @@ interface LoginCookieHeader {
 @endpoint({
 	method	: "POST",
 	path	: "/pre-login",
-	tags	: ["Authentication"],
+	tags	: ["Session"],
 })
 class ApiPreLogin
 {
@@ -261,7 +261,7 @@ interface PreloginResponse {
 @endpoint({
 	method	: "POST",
 	path	: "/login",
-	tags	: ["Authentication"]
+	tags	: ["Session"]
 })
 class ApiLogin
 {
@@ -302,7 +302,7 @@ class ApiLogin
 @endpoint({
 	method	: "POST",
 	path	: "/user-info",
-	tags	: ["Authentication"]
+	tags	: ["General Information"]
 })
 class ApiUserInfo
 {
@@ -337,7 +337,7 @@ interface UserInfoResponse {
 @endpoint({
 	method	: "POST",
 	path	: "/logout",
-	tags	: ["Authentication"]
+	tags	: ["Session"]
 })
 class ApiLogout
 {
@@ -576,7 +576,7 @@ interface ChallengeResponse {
 @endpoint({
 	method	: "POST",
 	path	: "/pob-challenge-request",
-	tags	: ["Challenge"]
+	tags	: ["PoB Challenge"]
 })
 class ApiChallengeRequest
 {
@@ -611,7 +611,7 @@ class ApiChallengeRequest
 @endpoint({
 	method	: "POST",
 	path	: "/pob-challenge-status",
-	tags	: ["Challenge"]
+	tags	: ["PoB Challenge"]
 })
 class ApiChallengeStatus
 {
@@ -645,7 +645,7 @@ class ApiChallengeStatus
 @endpoint({
 	method	: "POST",
 	path	: "/pob-challenge-result",
-	tags	: ["Challenge"]
+	tags	: ["PoB Challenge"]
 })
 class ApiChallengeResult
 {
@@ -737,7 +737,7 @@ interface ChallengeStatusResponse {
 @endpoint({
 	method	: "POST",
 	path	: "/claim-bandwidth",
-	tags	: ["Bandwidth"]
+	tags	: ["PoB claim"]
 })
 class ApiClaimBandwidth 
 {
@@ -886,4 +886,85 @@ interface Prover {
 interface Challenger {
 	ip		: String,
 	publicKey	: String
+}
+
+/**
+	-----
+
+	Get user's IP addresses as seen by the challenge co-ordinator 
+**/
+
+@endpoint({
+	method	: "POST",
+	path	: "/ip-info",
+	tags	: ["General Information"]
+})
+class ApiIPInfo
+{
+	@request
+	request(
+		@headers headers : LoginCookieHeader
+	) {}
+
+	@response({ status: 200 })
+	successfulResponse(
+		@body body: IPInfoResponse
+	) {}
+}
+
+interface IPInfoResponse {
+	result : {
+	/**
+	-----
+
+	will return 'null' if the specific IP version is not available 
+	**/
+		IPv4 : String | null;
+		IPv6 : String | null;
+	}
+}
+
+/**
+	-----
+
+	Get statistics on 'provers' and 'challengers'. 
+**/
+
+@endpoint({
+	method	: "POST",
+	path	: "/statistics",
+	tags	: ["General Information"]
+})
+class ApiStatistics
+{
+	@request
+	request(
+		@headers headers : LoginCookieHeader
+	) {}
+
+	@response({ status: 200 })
+	successfulResponse(
+		@body body: StatisticsResponse
+	) {}
+}
+
+interface StatisticsResponse {
+	result : {
+
+	/**
+	-----
+	'online_provers' are the number of provers currently online.
+	'num_provers'    are the total number of provers registered.
+	**/
+		online_provers		: Integer;
+		num_provers		: Integer;
+
+	/**
+	-----
+	'online_challenges' are the number of challengers currently online.
+	'num_challengers'   are the total number of challengers registered.
+	**/
+		online_challenges	: Integer;
+		num_challengers		: Integer;
+	}
 }

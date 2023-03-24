@@ -8,7 +8,7 @@
     "/pre-login": {
       "post": {
         "tags": [
-          "Authentication"
+          "Session"
         ],
         "description": "-----\n\n\tThis API is to be called before logging in.\n\n\tIt will return a 'message' that has to be signed and sent to '/login' API.\n\n\tThis will also create a cookie;\n\n\thence the '/login' API must be called in a session.",
         "operationId": "ApiPreLogin",
@@ -59,7 +59,7 @@
     "/login": {
       "post": {
         "tags": [
-          "Authentication"
+          "Session"
         ],
         "description": "-----\n\n\tThis API logs in the user.\n\n\tThe user should send the 'message' that was received during the '/pre-login';\n\n\tand must sign the 'message' using privateKey.\n\n\tAnd send it in the 'signature' field.",
         "operationId": "ApiLogin",
@@ -120,7 +120,7 @@
     "/user-info": {
       "post": {
         "tags": [
-          "Authentication"
+          "General Information"
         ],
         "description": "-----\n\n\tGet logged in user information.",
         "operationId": "ApiUserInfo",
@@ -152,7 +152,7 @@
     "/logout": {
       "post": {
         "tags": [
-          "Authentication"
+          "Session"
         ],
         "description": "-----\n\n\tLogs out the user.",
         "operationId": "ApiLogout",
@@ -281,7 +281,7 @@
     "/pob-challenge-request": {
       "post": {
         "tags": [
-          "Challenge"
+          "PoB Challenge"
         ],
         "description": "-----\n\n\tRequest to create a new challenge.\n\n\tBefore calling this api 'startChallenge()' smart contract must be called.\n\n\tAnd the 'transaction' after calling the 'startChallenge' must be provided.",
         "operationId": "ApiChallengeRequest",
@@ -343,7 +343,7 @@
     "/pob-challenge-status": {
       "post": {
         "tags": [
-          "Challenge"
+          "PoB Challenge"
         ],
         "description": "-----\n\tGet the status of a given challenge.",
         "operationId": "ApiChallengeStatus",
@@ -405,7 +405,7 @@
     "/pob-challenge-result": {
       "post": {
         "tags": [
-          "Challenge"
+          "PoB Challenge"
         ],
         "description": "-----\n\tPost the results of a challenge.",
         "operationId": "ApiChallengeResult",
@@ -467,7 +467,7 @@
     "/claim-bandwidth": {
       "post": {
         "tags": [
-          "Bandwidth"
+          "PoB claim"
         ],
         "description": "-----\n\tClaim that you have certain bandwidth in Mbps.",
         "operationId": "ApiClaimBandwidth",
@@ -604,6 +604,70 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FailureResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ip-info": {
+      "post": {
+        "tags": [
+          "General Information"
+        ],
+        "description": "-----\n\n\tGet user's IP addresses as seen by the challenge co-ordinator",
+        "operationId": "ApiIPInfo",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IPInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/statistics": {
+      "post": {
+        "tags": [
+          "General Information"
+        ],
+        "description": "-----\n\n\tGet statistics on 'provers' and 'challengers'.",
+        "operationId": "ApiStatistics",
+        "parameters": [
+          {
+            "name": "Cookie",
+            "in": "header",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatisticsResponse"
                 }
               }
             }
@@ -1210,6 +1274,69 @@
           "message_type",
           "message",
           "signature"
+        ]
+      },
+      "IPInfoResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "properties": {
+              "IPv4": {
+                "type": "string",
+                "nullable": true,
+                "description": "-----\n\n\twill return 'null' if the specific IP version is not available"
+              },
+              "IPv6": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "IPv4",
+              "IPv6"
+            ]
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "StatisticsResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "object",
+            "properties": {
+              "online_provers": {
+                "type": "integer",
+                "format": "int32",
+                "description": "-----\n\t'online_provers' are the number of provers currently online.\n\t'num_provers'    are the total number of provers registered."
+              },
+              "num_provers": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "online_challenges": {
+                "type": "integer",
+                "format": "int32",
+                "description": "-----\n\t'online_challenges' are the number of challengers currently online.\n\t'num_challengers'   are the total number of challengers registered."
+              },
+              "num_challengers": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "required": [
+              "online_provers",
+              "num_provers",
+              "online_challenges",
+              "num_challengers"
+            ]
+          }
+        },
+        "required": [
+          "result"
         ]
       }
     },
