@@ -67,7 +67,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/pre-login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/pre-login' API.\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"
@@ -128,7 +128,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"
@@ -182,7 +182,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"
@@ -244,7 +244,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"
@@ -289,7 +289,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"
@@ -351,7 +351,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"
@@ -413,7 +413,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"
@@ -475,7 +475,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"
@@ -547,7 +547,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"
@@ -622,7 +622,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"
@@ -654,7 +654,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"
@@ -686,7 +686,7 @@
           {
             "name": "Cookie",
             "in": "header",
-            "description": "-----\n\tThe cookie that was received after calling '/login' API",
+            "description": "-----\n\tThe cookie that was received after calling '/login' API\n\tThe name of the cookie is '__Secure-session'.",
             "required": true,
             "schema": {
               "type": "string"

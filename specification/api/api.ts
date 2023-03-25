@@ -90,7 +90,8 @@ interface FailureResponse {
 interface PreLoginCookieHeader {
 
 	/** -----
-	The cookie that was received after calling '/pre-login' API
+	The cookie that was received after calling '/pre-login' API.
+	The name of the cookie is '__Secure-session'.
 	**/
 
 	"Cookie" : String
@@ -100,6 +101,7 @@ interface LoginCookieHeader {
 
 	/** -----
 	The cookie that was received after calling '/login' API
+	The name of the cookie is '__Secure-session'.
 	**/
 
 	"Cookie" : String
