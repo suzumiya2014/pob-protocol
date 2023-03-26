@@ -91,7 +91,7 @@ interface PreLoginCookieHeader {
 
 	/** -----
 	The cookie that was received after calling '/pre-login' API.
-	The name of the cookie is '__Secure-session'.
+	The name of the cookies are: '__Secure-session' and '__Secure-session.sig'
 	**/
 
 	"Cookie" : String
