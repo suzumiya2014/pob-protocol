@@ -742,13 +742,13 @@ interface ChallengeStatusResponse {
 
 	/**
 	-----
-	Claim that you have certain bandwidth in Mbps.
+	Claim that the 'user' has certain bandwidth in Mbps.
 	**/
 
 
 @endpoint({
 	method	: "POST",
-	path	: "/claim-bandwidth",
+	path	: "/pob-claim-bandwidth",
 	tags	: ["PoB claim"]
 })
 class ApiClaimBandwidth

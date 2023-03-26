@@ -464,12 +464,12 @@
         }
       }
     },
-    "/claim-bandwidth": {
+    "/pob-claim-bandwidth": {
       "post": {
         "tags": [
           "PoB claim"
         ],
-        "description": "-----\n\tClaim that you have certain bandwidth in Mbps.",
+        "description": "-----\n\tClaim that the 'user' has certain bandwidth in Mbps.",
         "operationId": "ApiClaimBandwidth",
         "parameters": [
           {
