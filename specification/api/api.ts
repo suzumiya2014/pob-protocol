@@ -91,7 +91,9 @@ interface PreLoginCookieHeader {
 
 	/** -----
 	The cookie that was received after calling '/pre-login' API.
-	The name of the cookies are: '__Secure-session' and '__Secure-session.sig'
+
+	The name of the cookies are:
+		'__Secure-session' and '__Secure-session.sig'
 	**/
 
 	"Cookie" : String
@@ -101,7 +103,9 @@ interface LoginCookieHeader {
 
 	/** -----
 	The cookie that was received after calling '/login' API
-	The name of the cookie is '__Secure-session'.
+
+	The name of the cookies are:
+		'__Secure-session' and '__Secure-session.sig'
 	**/
 
 	"Cookie" : String
@@ -139,7 +143,13 @@ class ApiPreLogin
 		@body body: PreloginResponse,
 		@headers headers : {
 
-			/** initial cookie that is to be sent to '/login' API **/
+		/**
+		-----
+		The cookie that is to be sent to '/login' API
+
+		The name of the cookies are:
+			'__Secure-session' and '__Secure-session.sig'
+		**/
 
 			"Set-Cookie" : String
 		}
@@ -280,10 +290,10 @@ class ApiLogin
 		@headers
 			headers : {
 
-			/**
-				Cookie after successful login.
-				It must be presented for next API calls.
-			**/
+	/** -----
+	The cookie after successful login.
+	It must be presented for next API calls.
+	**/
 
 			"Set-Cookie" : String
 		}
