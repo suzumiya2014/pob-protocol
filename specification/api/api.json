@@ -89,7 +89,7 @@
             "description": "200 response",
             "headers": {
               "Set-Cookie": {
-                "description": "-----\n\tThe cookie after successful login.\n\tIt must be presented for next API calls.",
+                "description": "-----\n\tthe cookie after successful login.\n\tit must be presented for next api calls.",
                 "required": true,
                 "schema": {
                   "type": "string"
@@ -110,6 +110,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FailureResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailureResponse"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "402 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StakingResponse"
                 }
               }
             }
@@ -791,7 +811,7 @@
             "required": [
               "message"
             ],
-            "description": "-----\n\tOn failure, the 'error.message' contains the reason for the failure."
+            "description": "-----\n\tThe 'error.message' contains the reason for the failure."
           }
         },
         "required": [
@@ -833,6 +853,26 @@
         },
         "required": [
           "result"
+        ]
+      },
+      "StakingResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "message"
+            ],
+            "description": "-----\n\tThe failure due to requirement of 'payment' or 'staking'.\n\n\tThe 'error.message' contains the reason for the failure."
+          }
+        },
+        "required": [
+          "error"
         ]
       },
       "UserInfoResponse": {

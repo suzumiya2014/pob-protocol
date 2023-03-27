@@ -79,7 +79,20 @@ interface SuccessResponse {
 interface FailureResponse {
 
 	/** -----
-	On failure, the 'error.message' contains the reason for the failure.
+	The 'error.message' contains the reason for the failure.
+	**/
+
+	error : {
+		 message : String;
+	}
+}
+
+interface StakingResponse {
+
+	/** -----
+	The failure due to requirement of 'payment' or 'staking'.
+
+	The 'error.message' contains the reason for the failure.
 	**/
 
 	error : {
@@ -291,8 +304,8 @@ class ApiLogin
 			headers : {
 
 	/** -----
-	The cookie after successful login.
-	It must be presented for next API calls.
+	the cookie after successful login.
+	it must be presented for next api calls.
 	**/
 
 			"Set-Cookie" : String
@@ -302,6 +315,22 @@ class ApiLogin
 	@response({ status: 400 })
 	badRequestResponse(
 		@body body: FailureResponse,
+	) {}
+
+	@response({ status: 401 })
+	unauthorizedResponse(
+		@body body: FailureResponse,
+	) {}
+
+	@response({ status: 402 })
+	paymentRequiredResponse(
+
+	/** -----
+	The response when a payment OR 'staking' is 
+	required before making this call.
+	**/
+		
+		@body body: StakingResponse,
 	) {}
 }
 
